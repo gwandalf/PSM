@@ -1,9 +1,17 @@
 package gwendal.psm;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import model.ContactGroup;
 
 
 public class ContactGroupActivity extends Activity {
@@ -12,6 +20,10 @@ public class ContactGroupActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_group);
+        Button createGroup = (Button) findViewById(R.id.create_group);
+        EditText et = (EditText) findViewById(R.id.group_name);
+        RegisterContactGroupCommand command = new RegisterContactGroupCommand(this, et);
+        createGroup.setOnClickListener(command);
     }
 
 
@@ -35,5 +47,15 @@ public class ContactGroupActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Launch the activity on the specified Contact Group.
+     * @param cg ContactGroup to be displayed.
+     */
+    public static void launchOnContactGroup(ContactGroup cg, Context ctx) {
+        Intent intent = new Intent(ctx, ContactGroupActivity.class);
+        intent.putExtra("cg", cg);
+        ctx.startActivity(intent);
     }
 }

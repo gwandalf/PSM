@@ -4,8 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import model.ContactGroup;
@@ -14,13 +19,21 @@ import model.ContactGroup;
 public class MainActivity extends Activity {
 
     //Contact Groups.
-    private List<ContactGroup> contactGroupList;
+    private static ContactGroupListController contactGroupList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button addGroup = (Button) findViewById(R.id.)
+        LinearLayout layout = (LinearLayout) findViewById(R.id.group_list);
+        try {
+            contactGroupList = new ContactGroupListController(this, layout);
+        } catch (Exception e) {
+            DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
+        }
+        Button addGroup = (Button) findViewById(R.id.add_group);
+        AddContactGroupCommand command = new AddContactGroupCommand(this);
+        addGroup.setOnClickListener(command);
     }
 
 
@@ -46,12 +59,8 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * Registers the specified ContactGroup.
-     * @param cg ContactGroup to register.
-     */
-    public static void register(ContactGroup cg) {
-
+    public static void register(ContactGroup cg) throws IOException {
+       contactGroupList.register(cg);
     }
 
 }

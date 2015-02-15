@@ -7,6 +7,7 @@
     tools:context="gwendal.psm.ContactGroupActivity">
 
     <EditText
+        android:id="@+id/group_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
