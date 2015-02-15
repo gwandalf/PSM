@@ -4,5 +4,8 @@
     <string name="app_name">PSM</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="add_group">Ajouter un groupe</string>
+    <string name="title_activity_contact_group">ContactGroupActivity</string>
+    <string name="create_group">Créer le groupe</string>
 
 </resources>

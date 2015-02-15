@@ -4,30 +4,21 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-
-import java.util.List;
-
-import model.ContactGroup;
 
 
-public class MainActivity extends Activity {
-
-    //Contact Groups.
-    private List<ContactGroup> contactGroupList;
+public class ContactGroupActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button addGroup = (Button) findViewById(R.id.)
+        setContentView(R.layout.activity_contact_group);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_contact_group, menu);
         return true;
     }
 
@@ -45,13 +36,4 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * Registers the specified ContactGroup.
-     * @param cg ContactGroup to register.
-     */
-    public static void register(ContactGroup cg) {
-
-    }
-
 }
