@@ -1,0 +1,18 @@
+Je t'ai bien ajouté.
+
+Petit rappel pour git hub (et git en général) :
+
+(* si necessaire
+- Avant tout installer git
+- Entrer les commandes suivantes :
+git config —global user.email "votre@email.com"
+git config —global user.name "Votre Nom"
+*)
+
+- Créez un nouveau dossier pour le dépôt GIT puis mettez vous dans ce dossier
+- Lancez les commandes :
+git init
+git remote add origin https://github.com/chemin/vers/le/projet/projet.git
+- Connectez vous avec vos identifiants GitHub
+- Lancez la commande :
+git pull origin master
