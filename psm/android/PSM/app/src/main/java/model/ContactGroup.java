@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.HashSet;
 
 import interfaces.ContactGroupInterface;
 
@@ -8,10 +9,17 @@ import interfaces.ContactGroupInterface;
  * Created by gwendal on 15/02/15.
  * Contact Group.
  */
-public class ContactGroup implements ContactGroupInterface, Serializable {
+public class ContactGroup extends HashSet<Contact> implements ContactGroupInterface, Serializable {
 
     //Name.
     private String name;
+
+    /**
+     * Constructor.
+     */
+    public ContactGroup() {
+        this.name = "(Sans nom)";
+    }
 
     /**
      * Constructor.

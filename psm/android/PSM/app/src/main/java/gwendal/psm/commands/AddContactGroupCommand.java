@@ -1,7 +1,10 @@
-package gwendal.psm;
+package gwendal.psm.commands;
 
 import android.content.Context;
 import android.view.View;
+
+import gwendal.psm.ContactGroupActivity;
+import model.ContactGroup;
 
 /**
  * Created by gwendal on 15/02/15.
@@ -22,6 +25,7 @@ public class AddContactGroupCommand implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        ContactGroupActivity.launchOnContactGroup(null, this.ctx);
+       ContactGroup cg = new ContactGroup();
+       ContactGroupActivity.launchOnContactGroup(cg, this.ctx);
     }
 }

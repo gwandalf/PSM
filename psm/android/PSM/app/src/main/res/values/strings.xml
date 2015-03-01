@@ -8,5 +8,6 @@
     <string name="title_activity_contact_group">ContactGroupActivity</string>
     <string name="create_group">Créer le groupe</string>
     <string name="ok">OK</string>
+    <string name="add_contact">Ajouter un contact...</string>
 
 </resources>
