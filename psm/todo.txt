@@ -1,1 +1,5 @@
+
+buffer :
+destruction de groupes de contact
+retirer des contacts d'un groupe
 interfacer appli téléphone avec appli ordinateur.
