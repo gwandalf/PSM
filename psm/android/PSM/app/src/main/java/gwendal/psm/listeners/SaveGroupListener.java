@@ -1,4 +1,4 @@
-package gwendal.psm.commands;
+package gwendal.psm.listeners;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,29 +14,14 @@ import model.ContactGroup;
 /**
  * Created by gwendal on 15/02/15.
  */
-public class RegisterContactGroupCommand implements View.OnClickListener {
-
-    //Current Activity.
-    private Activity activity;
-
-    //Name field.
-    private TextView tv;
-
-    /**
-     * Contact Group to register.
-     */
-    private ContactGroup contactGroup;
+public class SaveGroupListener extends LaunchedListener {
 
     /**
      * Constructor.
-     * @param activity Current activity.
-     * @param tv Name field.
-     * @param contactGroup Contact Group to register.
+     * @param launcher Current activity.
      */
-    public RegisterContactGroupCommand(Activity activity, TextView tv, ContactGroup contactGroup) {
-        this.activity = activity;
-        this.tv = tv;
-        this.contactGroup = contactGroup;
+    public SaveGroupListener(Context launcher) {
+        super(launcher);
     }
 
     @Override

@@ -13,12 +13,13 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import gwendal.psm.commands.AddContactCommand;
-import gwendal.psm.commands.RegisterContactGroupCommand;
+import java.util.HashSet;
+
+import gwendal.psm.listeners.AddContactListener;
+import gwendal.psm.listeners.SaveGroupListener;
+import gwendal.psm.controllers.ContactController;
 import model.Contact;
 import model.ContactGroup;
 
@@ -37,6 +38,11 @@ public class ContactGroupActivity extends Activity {
      */
     private LinearLayout layout;
 
+    /**
+     * ContactController set.
+     */
+    private HashSet<ContactController> contactCtrlSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +54,11 @@ public class ContactGroupActivity extends Activity {
             this.observed = new ContactGroup();
         this.layout = (LinearLayout) findViewById(R.id.contact_list);
         Button addContact = (Button) findViewById(R.id.add_contact);
-        AddContactCommand addContactCommand = new AddContactCommand(this);
-        addContact.setOnClickListener(addContactCommand);
+        AddContactListener addContactListener = new AddContactListener(this);
+        addContact.setOnClickListener(addContactListener);
         Button createGroup = (Button) findViewById(R.id.register_group);
         EditText et = (EditText) findViewById(R.id.group_name);
-        RegisterContactGroupCommand command = new RegisterContactGroupCommand(this, et, this.observed);
+        SaveGroupListener command = new SaveGroupListener(this, et, this.observed);
         createGroup.setOnClickListener(command);
     }
 
@@ -91,6 +97,7 @@ public class ContactGroupActivity extends Activity {
 
     /**
      * Starts the contact activity for contact picking.
+     * TODO: remove
      */
     public void pickContact() {
         Intent pickContactIntent = new Intent(

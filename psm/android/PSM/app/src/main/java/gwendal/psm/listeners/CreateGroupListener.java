@@ -1,4 +1,4 @@
-package gwendal.psm.commands;
+package gwendal.psm.listeners;
 
 import android.content.Context;
 import android.view.View;
@@ -10,17 +10,14 @@ import model.ContactGroup;
  * Created by gwendal on 15/02/15.
  * Add a Contact Group.
  */
-public class AddContactGroupCommand implements View.OnClickListener {
-
-    //Current Context.
-    private Context ctx;
+public class CreateGroupListener extends LaunchedListener {
 
     /**
      * Constructor.
-     * @param ctx Current context.
+     * @param launcher Current context.
      */
-    public AddContactGroupCommand(Context ctx) {
-        this.ctx = ctx;
+    public CreateGroupListener(Context launcher) {
+        super(launcher);
     }
 
     @Override

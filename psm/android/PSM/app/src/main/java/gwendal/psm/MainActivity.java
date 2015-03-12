@@ -8,15 +8,29 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.io.IOException;
+import java.util.HashSet;
 
-import gwendal.psm.commands.AddContactGroupCommand;
+import gwendal.psm.listeners.CreateGroupListener;
+import gwendal.psm.controllers.ContactGroupController;
 import model.ContactGroup;
 
 
 public class MainActivity extends Activity {
 
-    //Contact Groups.
-    private static ContactGroupListController contactGroupList;
+    /**
+     * ContactGroupController set.
+     */
+    private HashSet<ContactGroupController> contactGroupCtrlSet;
+
+    /**
+     * ContactGroup in creation.
+     */
+    public ContactGroup inCreation;
+
+    /**
+     * ContactGroup in modification.
+     */
+    public ContactGroup inModif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +43,14 @@ public class MainActivity extends Activity {
             DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
         }
         Button addGroup = (Button) findViewById(R.id.add_group);
-        AddContactGroupCommand command = new AddContactGroupCommand(this);
+        CreateGroupListener command = new CreateGroupListener(this);
         addGroup.setOnClickListener(command);
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,8 +74,13 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void register(ContactGroup cg) throws IOException {
-       contactGroupList.register(cg);
+    /**
+     * Saves the specified ContactGroup.
+     * @param cg ContactGroup
+     * @throws IOException in case of error while saving.
+     */
+    public void save(ContactGroup cg) throws IOException {
+
     }
 
 }
