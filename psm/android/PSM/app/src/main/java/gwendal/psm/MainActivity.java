@@ -38,7 +38,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         LinearLayout layout = (LinearLayout) findViewById(R.id.group_list);
         try {
-            contactGroupList = new ContactGroupListController(this, layout);
+            this.contactGroupCtrlSet = new HashSet<ContactGroupController>();
         } catch (Exception e) {
             DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
         }

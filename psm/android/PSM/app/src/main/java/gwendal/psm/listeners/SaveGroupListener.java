@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 
+import gwendal.psm.ContactGroupActivity;
 import gwendal.psm.DialogFactory;
 import gwendal.psm.MainActivity;
 import model.ContactGroup;
@@ -14,24 +15,19 @@ import model.ContactGroup;
 /**
  * Created by gwendal on 15/02/15.
  */
-public class SaveGroupListener extends LaunchedListener {
+public class SaveGroupListener extends GroupListener {
 
     /**
      * Constructor.
-     * @param launcher Current activity.
+     * @param cga Current activity.
      */
-    public SaveGroupListener(Context launcher) {
-        super(launcher);
+    public SaveGroupListener(ContactGroupActivity cga) {
+        super(cga);
     }
 
     @Override
     public void onClick(View v) {
-        try {
-            this.contactGroup.setName(tv.getText().toString());
-            MainActivity.register(this.contactGroup);
-            this.activity.finish();
-        } catch (IOException e) {
-            DialogFactory.showErrorDialog("Le groupe ne peut pas être enregistré.", this.activity);
-        }
+        //TODO copy fields.
+        this.cga.finish();
     }
 }

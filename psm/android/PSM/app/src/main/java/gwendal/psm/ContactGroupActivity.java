@@ -58,7 +58,7 @@ public class ContactGroupActivity extends Activity {
         addContact.setOnClickListener(addContactListener);
         Button createGroup = (Button) findViewById(R.id.register_group);
         EditText et = (EditText) findViewById(R.id.group_name);
-        SaveGroupListener command = new SaveGroupListener(this, et, this.observed);
+        SaveGroupListener command = new SaveGroupListener(this);
         createGroup.setOnClickListener(command);
     }
 
