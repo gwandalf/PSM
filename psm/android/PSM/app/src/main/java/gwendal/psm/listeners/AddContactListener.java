@@ -9,7 +9,7 @@ import gwendal.psm.ContactGroupActivity;
  * Created by gwendal on 01/03/15.
  * Add a contact to a contact group.
  */
-public class AddContactListener extends LaunchedListener {
+public class AddContactListener extends GroupListener {
 
     /**
      * ContactGroup activity
@@ -18,10 +18,10 @@ public class AddContactListener extends LaunchedListener {
 
     /**
      * Constructor.
-     * @param launcher Parent activity.
+     * @param cga Parent activity.
      */
-    public AddContactListener(Context launcher) {
-        super(launcher);
+    public AddContactListener(ContactGroupActivity cga) {
+        super(cga);
         this.activity = activity;
     }
 

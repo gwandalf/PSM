@@ -3,3 +3,4 @@ buffer :
 destruction de groupes de contact
 retirer des contacts d'un groupe
 interfacer appli téléphone avec appli ordinateur.
+Refactorer les ensembles de controlleurs : doivent gérer la serialization le plus possible. Font office de Factory pour les models.

@@ -59,14 +59,7 @@ public class ContactGroupListController extends ArrayList<ContactGroup> {
      * @param cg ContactGroup to register.
      */
     public void register(ContactGroup cg) throws IOException {
-        this.add(cg);
-        int count = this.size();
-        String fileName = "" + count + ".cg";
-        FileOutputStream fos = ctx.openFileOutput(fileName, Context.MODE_PRIVATE);
-        ObjectOutputStream os = new ObjectOutputStream(fos);
-        os.writeObject(cg);
-        os.close();
-        fos.close();
+
     }
 
 }

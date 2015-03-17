@@ -22,9 +22,31 @@ public class ContactGroupController {
      */
     private ContactGroup model;
 
+    /**
+     * Serialization file name.
+     */
+    private String fileName;
+
+    /**
+     * Constructor.
+     * @param model model.
+     * @param parent Parent activity.
+     */
     public ContactGroupController(ContactGroup model, Context parent) {
         this.model = model;
         this.view = new TextView(parent);
+    }
+
+    /**
+     * Constructor.
+     * @param model model.
+     * @param parent Parent activity.
+     * @param fileName Serialization file name.
+     */
+    public ContactGroupController(ContactGroup model, Context parent, String fileName) {
+        this.model = model;
+        this.view = new TextView(parent);
+        this.fileName = fileName;
     }
 
     /**
@@ -50,4 +72,10 @@ public class ContactGroupController {
     public void setModel(ContactGroup model) {
         this.model = model;
     }
+
+    /**
+     * Gets the fileName.
+     * @return the fileName.
+     */
+    public String getFileName() { return this.fileName; }
 }

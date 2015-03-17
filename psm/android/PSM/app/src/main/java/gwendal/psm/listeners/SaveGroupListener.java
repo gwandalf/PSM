@@ -27,7 +27,8 @@ public class SaveGroupListener extends GroupListener {
 
     @Override
     public void onClick(View v) {
-        //TODO copy fields.
+        String name = this.cga.getGroupName().getText().toString();
+        this.cga.getObserved().setName(name);
         this.cga.finish();
     }
 }

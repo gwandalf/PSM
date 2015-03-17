@@ -43,6 +43,11 @@ public class ContactGroupActivity extends Activity {
      */
     private HashSet<ContactController> contactCtrlSet;
 
+    /**
+     * Group name field.
+     */
+    private EditText groupName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,13 +58,19 @@ public class ContactGroupActivity extends Activity {
         else
             this.observed = new ContactGroup();
         this.layout = (LinearLayout) findViewById(R.id.contact_list);
+        this.contactCtrlSet = new HashSet<ContactController>();
+        for(Contact c : this.observed) {
+            ContactController ctrl = new ContactController(this, c);
+            this.contactCtrlSet.add(ctrl);
+            this.layout.addView(ctrl.getView());
+        }
         Button addContact = (Button) findViewById(R.id.add_contact);
         AddContactListener addContactListener = new AddContactListener(this);
         addContact.setOnClickListener(addContactListener);
-        Button createGroup = (Button) findViewById(R.id.register_group);
-        EditText et = (EditText) findViewById(R.id.group_name);
-        SaveGroupListener command = new SaveGroupListener(this);
-        createGroup.setOnClickListener(command);
+        Button okButton = (Button) findViewById(R.id.register_group);
+        this.groupName = (EditText) findViewById(R.id.group_name);
+        SaveGroupListener ok = new SaveGroupListener(this);
+        okButton.setOnClickListener(ok);
     }
 
 
@@ -124,5 +135,19 @@ public class ContactGroupActivity extends Activity {
         }
         else
             DialogFactory.showErrorDialog("Le contact n'a pas pu être ajouté.", this);
+    }
+
+    /**
+     * Gets the groupName.
+     * @return groupName.
+     */
+    public EditText getGroupName() { return this.groupName; }
+
+    /**
+     * Gets the observed group.
+     * @return the observed group.
+     */
+    public ContactGroup getObserved() {
+        return observed;
     }
 }
