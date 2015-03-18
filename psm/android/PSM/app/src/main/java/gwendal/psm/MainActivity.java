@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
     /**
      * ContactGroupController set.
      */
-    private ContactGroupControllerSet contactGroupCtrlSet;
+    public ContactGroupControllerSet contactGroupCtrlSet;
 
     /**
      * ContactGroup in creation.
