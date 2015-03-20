@@ -1,6 +1,7 @@
 package gwendal.psm.stubs;
 
 import android.content.Context;
+import android.content.Intent;
 
 import model.ContactGroup;
 
@@ -10,7 +11,13 @@ import model.ContactGroup;
  */
 public class SmsActivityStub {
 
-    public static void launchOnGroup(ContactGroup group, Context launcher) {
-
+    /**
+     * Launches the SMS activity on the specified ContactGroup, from the specified launcher Context.
+     * @param group ContactGroup.
+     * @param launcher Launcher Context.
+     * @return The intent sent to the SMS activity.
+     */
+    public static Intent launchOnGroup(ContactGroup group, Context launcher) {
+        return null;
     }
 }
