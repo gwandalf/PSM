@@ -1,7 +1,11 @@
 package gwendal.psm.controllers;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.TextView;
 
@@ -21,7 +25,7 @@ public class ContactController {
     /**
      * View.
      */
-    private View view;
+    private TextView view;
 
     /**
      * Constructor. Initializes the model with the specified data.
@@ -29,7 +33,14 @@ public class ContactController {
      * @param data Data retrieved from the contacts app.
      */
     public ContactController(Context parent, Intent data) {
-        //TODO
+        Uri contactUri = data.getData();
+        Cursor cursor = parent.getContentResolver().query(contactUri, null, null, null, null);
+        cursor.moveToFirst();
+        int nameColumn = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+        String name = cursor.getString(nameColumn);
+        this.model = new Contact("id", name, "number");
+        this.view = new TextView(parent);
+        this.view.setText(this.model.getName());
     }
 
     /**

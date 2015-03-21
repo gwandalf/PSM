@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import gwendal.psm.ContactGroupActivity;
+import gwendal.psm.stubs.ContactsActivityStub;
 
 /**
  * Created by gwendal on 01/03/15.
@@ -27,6 +28,6 @@ public class AddContactListener extends GroupListener {
 
     @Override
     public void onClick(View v) {
-        this.activity.pickContact();
+        ContactsActivityStub.launch(this.activity);
     }
 }

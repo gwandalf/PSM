@@ -106,32 +106,13 @@ public class ContactGroupActivity extends Activity {
         ctx.startActivity(intent);
     }
 
-    /**
-     * Starts the contact activity for contact picking.
-     * TODO: remove
-     */
-    public void pickContact() {
-        Intent pickContactIntent = new Intent(
-                Intent.ACTION_PICK,
-                ContactsContract.Contacts.CONTENT_URI
-        );
-        startActivityForResult(pickContactIntent, 1);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
-            Uri contactUri = data.getData();
-            Cursor cursor = getContentResolver().query(contactUri, null, null, null, null);
-            cursor.moveToFirst();
-            int nameColumn = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-            String name = cursor.getString(nameColumn);
-            Contact contact = new Contact("id", name, "number");
-            this.observed.add(contact);
-            TextView contactView = new TextView(this);
-            contactView.setText(contact.getName());
-            this.layout.addView(contactView, ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+            ContactController ctrl = new ContactController(this, data);
+            this.observed.add(ctrl.getModel());
+            this.layout.addView(ctrl.getView(), ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
         }
         else
             DialogFactory.showErrorDialog("Le contact n'a pas pu être ajouté.", this);
