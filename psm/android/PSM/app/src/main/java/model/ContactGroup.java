@@ -11,21 +11,29 @@ import interfaces.ContactGroupInterface;
  */
 public class ContactGroup extends HashSet<Contact> implements ContactGroupInterface, Serializable {
 
+    /**
+     * Id.
+     */
+    private int id;
+
     //Name.
     private String name;
 
     /**
      * Constructor.
      */
-    public ContactGroup() {
+    public ContactGroup(int id) {
+        this.id = 0;
         this.name = "(Sans nom)";
     }
 
     /**
      * Constructor.
-     * @param name Contact Group name.
+     * @param id Id.
+     * @param name Name.
      */
-    public ContactGroup(String name) {
+    public ContactGroup(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -37,5 +45,13 @@ public class ContactGroup extends HashSet<Contact> implements ContactGroupInterf
     @Override
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Gets the id.
+     * @return Id.
+     */
+    public int getId() {
+        return id;
     }
 }

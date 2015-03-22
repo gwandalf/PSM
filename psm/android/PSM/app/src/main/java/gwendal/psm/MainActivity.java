@@ -14,9 +14,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import gwendal.psm.controllers.ContactGroupControllerSet;
+import gwendal.psm.controllers.ContactGroupFactory;
 import gwendal.psm.listeners.CreateGroupListener;
 import gwendal.psm.controllers.ContactGroupController;
 import gwendal.psm.listeners.OpenGroupListener;
@@ -40,23 +44,32 @@ public class MainActivity extends Activity {
      */
     public ContactGroup inModif;
 
+    /**
+     * ContactGroupFactory.
+     */
+    public ContactGroupFactory factory;
+
+    /**
+     * Layout.
+     */
+    private LinearLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LinearLayout layout = (LinearLayout) findViewById(R.id.group_list);
-        this.contactGroupCtrlSet = new ContactGroupControllerSet();
-        try {
-            for (String file : this.fileList()) {
-                ContactGroup cg = load(file);
-                ContactGroupController cgc = new ContactGroupController(cg, this, file);
-                this.contactGroupCtrlSet.add(cgc);
-                layout.addView(cgc.getView());
-                OpenGroupListener open = new OpenGroupListener(this, cg);
-                cgc.getView().setOnClickListener(open);
+        this.layout = (LinearLayout) findViewById(R.id.group_list);
+        List<String> fileList = Arrays.asList(fileList());
+        if(fileList.contains(ContactGroupFactory.FILE_NAME)) {
+            try {
+                this.factory = ContactGroupFactory.loadInstance(this);
+                this.contactGroupCtrlSet = this.factory.load(this);
+            }catch(Exception e){
+                DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
             }
-        }catch(Exception e){
-            DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
+        } else {
+            this.factory = new ContactGroupFactory();
+            this.contactGroupCtrlSet = new ContactGroupControllerSet();
         }
         Button addGroup = (Button) findViewById(R.id.add_group);
         CreateGroupListener command = new CreateGroupListener(this);
@@ -68,7 +81,7 @@ public class MainActivity extends Activity {
        super.onRestart();
        if(this.inModif != null) {
            try {
-               save(this.inModif);
+               this.factory.save(this.inModif, this);
                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_LONG);
            } catch (IOException e) {
                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_LONG);
@@ -99,35 +112,10 @@ public class MainActivity extends Activity {
     }
 
     /**
-     * Saves the specified ContactGroup.
-     * @param cg ContactGroup
-     * @throws IOException in case of error while saving.
+     * Gets the current layout.
+     * @return LinearLayout.
      */
-    public void save(ContactGroup cg) throws IOException {
-        ContactGroupController ctrl = this.contactGroupCtrlSet.getControllerOfModel(cg);
-        if(ctrl != null) {
-            FileOutputStream fos = this.openFileOutput(ctrl.getFileName(), Context.MODE_PRIVATE);
-            ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(cg);
-            os.close();
-            fos.close();
-        }
-        //TODO if null
-    }
-
-    /**
-     * Loads the ContactGroup saved in the file of name fileName.
-     * @param fileName File name.
-     * @return Saved ContactGroup.
-     * @throws IOException
-     * @throws ClassNotFoundException
-     */
-    public ContactGroup load(String fileName) throws IOException, ClassNotFoundException {
-        FileInputStream fileInputStream = this.openFileInput(fileName);
-        ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-        ContactGroup res = (ContactGroup) objectInputStream.readObject();
-        objectInputStream.close();
-        fileInputStream.close();
-        return res;
+    public LinearLayout getLayout() {
+        return layout;
     }
 }

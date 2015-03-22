@@ -2,8 +2,12 @@ package gwendal.psm.controllers;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import gwendal.psm.MainActivity;
+import gwendal.psm.listeners.OpenGroupListener;
 import model.ContactGroup;
 
 /**
@@ -23,30 +27,18 @@ public class ContactGroupController {
     private ContactGroup model;
 
     /**
-     * Serialization file name.
-     */
-    private String fileName;
-
-    /**
      * Constructor.
+     * Add the view to the MainActivity and sets it up (listener).
      * @param model model.
-     * @param parent Parent activity.
+     * @param main Parent activity.
      */
-    public ContactGroupController(ContactGroup model, Context parent) {
+    public ContactGroupController(ContactGroup model, MainActivity main) {
         this.model = model;
-        this.view = new TextView(parent);
-    }
-
-    /**
-     * Constructor.
-     * @param model model.
-     * @param parent Parent activity.
-     * @param fileName Serialization file name.
-     */
-    public ContactGroupController(ContactGroup model, Context parent, String fileName) {
-        this.model = model;
-        this.view = new TextView(parent);
-        this.fileName = fileName;
+        this.view = new TextView(main);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        main.getLayout().addView(this.view, params);
+        OpenGroupListener open = new OpenGroupListener(main, this.model);
+        this.view.setOnClickListener(open);
     }
 
     /**
@@ -73,9 +65,4 @@ public class ContactGroupController {
         this.model = model;
     }
 
-    /**
-     * Gets the fileName.
-     * @return the fileName.
-     */
-    public String getFileName() { return this.fileName; }
 }
