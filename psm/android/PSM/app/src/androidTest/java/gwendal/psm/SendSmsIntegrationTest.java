@@ -34,7 +34,7 @@ public class SendSmsIntegrationTest extends ActivityInstrumentationTestCase2<Mai
 
     @Override
     public void setUp() throws Exception {
-        this.cg = new ContactGroup("group");
+        this.cg = new ContactGroup(0, "group");
         this.cTab = new Contact[3];
         for(int i = 0 ; i < 3 ; i++) {
             this.cTab[i] = new Contact("" + i, "c" + i, "0" + i);

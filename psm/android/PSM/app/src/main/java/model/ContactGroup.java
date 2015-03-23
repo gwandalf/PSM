@@ -22,7 +22,7 @@ public class ContactGroup extends HashSet<Contact> implements ContactGroupInterf
     /**
      * Constructor.
      */
-    public ContactGroup(int id) {
+    public ContactGroup() {
         this.id = 0;
         this.name = "(Sans nom)";
     }

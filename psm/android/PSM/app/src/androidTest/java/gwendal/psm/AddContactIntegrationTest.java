@@ -55,7 +55,7 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
         Instrumentation.ActivityMonitor finishMonitor = getInstrumentation().addMonitor(MainActivity.class.getName(), null, false);
         this.cga.finish();
         getInstrumentation().waitForMonitorWithTimeout(finishMonitor, 5000);
-        this.main.contactGroupCtrlSet.contains(cg);
+        assertTrue(this.main.contactGroupCtrlSet.contains(cg));
     }
 
 }

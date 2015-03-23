@@ -23,7 +23,8 @@ public class CreateGroupListener extends MainListener {
 
     @Override
     public void onClick(View v) {
-       ContactGroup cg = new ContactGroup();
-       ContactGroupActivity.launchOnContactGroup(cg, this.main);
+        ContactGroup cg = new ContactGroup();
+        this.main.inCreation = cg;
+        ContactGroupActivity.launchOnContactGroup(cg, this.main);
     }
 }

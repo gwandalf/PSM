@@ -78,15 +78,27 @@ public class MainActivity extends Activity {
 
     @Override
     protected void onRestart() {
-       super.onRestart();
-       if(this.inModif != null) {
-           try {
-               this.factory.save(this.inModif, this);
-               Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_LONG);
-           } catch (IOException e) {
-               Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_LONG);
-           }
-       }
+        super.onRestart();
+        if(this.inModif != null) {
+            try {
+                this.factory.save(this.inModif, this);
+                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_LONG);
+            } catch (IOException e) {
+                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_LONG);
+            }
+            this.inModif = null;
+        }
+        if(this.inCreation != null) {
+            try {
+                this.factory.save(this.inCreation, this);
+                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_LONG);
+                ContactGroupController ctrl = new ContactGroupController(this.inCreation, this);
+                this.contactGroupCtrlSet.add(ctrl);
+            } catch (IOException e) {
+                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_LONG);
+            }
+            this.inCreation = null;
+        }
     }
 
     @Override

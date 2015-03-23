@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -53,10 +54,13 @@ public class ContactGroupActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_group);
         Bundle data = this.getIntent().getExtras();
-        if(data != null)
-            this.observed = (ContactGroup)data.get(CONTACT_GROUP);
-        else
+        if(data != null) {
+            Log.d("DATA", "data != null");
+            this.observed = (ContactGroup) data.get(CONTACT_GROUP);
+        } else {
+            Log.d("DATA", "data == null");
             this.observed = new ContactGroup();
+        }
         this.layout = (LinearLayout) findViewById(R.id.contact_list);
         this.contactCtrlSet = new HashSet<ContactController>();
         for(Contact c : this.observed) {
