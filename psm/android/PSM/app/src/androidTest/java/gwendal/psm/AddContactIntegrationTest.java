@@ -1,11 +1,13 @@
 package gwendal.psm;
 
+import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.test.ActivityInstrumentationTestCase2;
 
+import gwendal.psm.controllers.ContactGroupController;
 import gwendal.psm.stubs.ContactsActivityStub;
 import model.Contact;
 import model.ContactGroup;
@@ -43,19 +45,27 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
      */
     public void test() {
         this.main = getActivity();
-        ContactGroup cg = new ContactGroup();
+        ContactGroupController cg = new ContactGroupController(this.main);
+        this.main.contactGroupCtrlList.add(cg);
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
-        ContactGroupActivity.launchOnContactGroup(cg, this.main);
+        ContactGroupActivity.launchOnContactGroup(cg.getModel(), this.main, this.main.contactGroupCtrlList.size()-1);
         this.cga = (ContactGroupActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
         this.cga.getObserved().setName("name");
-        assertEquals("name", cg.getName());
-        ContactsActivityStub.launch(this.cga);
+        //ContactsActivityStub.launch(this.cga);
         Contact contact = new Contact("0", "contact", "0");
-        cg.add(contact);
+        this.cga.getObserved().add(contact);
         Instrumentation.ActivityMonitor finishMonitor = getInstrumentation().addMonitor(MainActivity.class.getName(), null, false);
+        Intent data = new Intent();
+        data.putExtra(ContactGroupActivity.CONTACT_GROUP, this.cga.getObserved());
+        if (this.cga.getParent() != null) {
+            this.cga.getParent().setResult(Activity.RESULT_OK, data);
+        }
         this.cga.finish();
         getInstrumentation().waitForMonitorWithTimeout(finishMonitor, 5000);
-        assertTrue(this.main.contactGroupCtrlSet.contains(cg));
+        ContactGroup group = cg.getModel();
+        assertNotNull(group);
+        assertEquals("name", group.getName());
+        assertEquals(1, group.size());
     }
 
 }

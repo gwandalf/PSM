@@ -19,12 +19,29 @@ public class ContactGroupController {
     /**
      * View.
      */
-    private View view;
+    private TextView view;
 
     /**
      * Model.
      */
     private ContactGroup model;
+
+    /**
+     * MainActivity instance.
+     */
+    private MainActivity main;
+
+    /**
+     * Constructor.
+     * Add the view to the MainActivity.
+     * @param main Parent activity.
+     */
+    public ContactGroupController(MainActivity main) {
+        this.main = main;
+        this.view = new TextView(main);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        this.main.runOnUiThread(new TempRunnable(this.main, this.view, params));
+    }
 
     /**
      * Constructor.
@@ -33,11 +50,13 @@ public class ContactGroupController {
      * @param main Parent activity.
      */
     public ContactGroupController(ContactGroup model, MainActivity main) {
+        this.main = main;
         this.model = model;
         this.view = new TextView(main);
+        this.view.setText(this.model.getName());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         main.getLayout().addView(this.view, params);
-        OpenGroupListener open = new OpenGroupListener(main, this.model);
+        OpenGroupListener open = new OpenGroupListener(main, this);
         this.view.setOnClickListener(open);
     }
 
@@ -58,11 +77,12 @@ public class ContactGroupController {
     }
 
     /**
-     * Changes the model.
+     * Changes the model and Triggers the changes to the view.
      * @param model Model to set.
      */
     public void setModel(ContactGroup model) {
         this.model = model;
+        this.main.runOnUiThread(new SetOnClickRunnable(this.view, this, this.main));
     }
 
 }

@@ -23,11 +23,10 @@ public class AddContactListener extends GroupListener {
      */
     public AddContactListener(ContactGroupActivity cga) {
         super(cga);
-        this.activity = activity;
     }
 
     @Override
     public void onClick(View v) {
-        ContactsActivityStub.launch(this.activity);
+        ContactsActivityStub.launch(this.cga);
     }
 }

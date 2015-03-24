@@ -2,6 +2,7 @@ package gwendal.psm;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,12 +20,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-import gwendal.psm.controllers.ContactGroupControllerSet;
+import gwendal.psm.controllers.ContactGroupControllerList;
 import gwendal.psm.controllers.ContactGroupFactory;
 import gwendal.psm.listeners.CreateGroupListener;
 import gwendal.psm.controllers.ContactGroupController;
 import gwendal.psm.listeners.OpenGroupListener;
 import model.ContactGroup;
+
+import static gwendal.psm.ContactGroupActivity.CONTACT_GROUP;
 
 
 public class MainActivity extends Activity {
@@ -32,17 +35,7 @@ public class MainActivity extends Activity {
     /**
      * ContactGroupController set.
      */
-    public ContactGroupControllerSet contactGroupCtrlSet;
-
-    /**
-     * ContactGroup in creation.
-     */
-    public ContactGroup inCreation;
-
-    /**
-     * ContactGroup in modification.
-     */
-    public ContactGroup inModif;
+    public ContactGroupControllerList contactGroupCtrlList;
 
     /**
      * ContactGroupFactory.
@@ -63,42 +56,17 @@ public class MainActivity extends Activity {
         if(fileList.contains(ContactGroupFactory.FILE_NAME)) {
             try {
                 this.factory = ContactGroupFactory.loadInstance(this);
-                this.contactGroupCtrlSet = this.factory.load(this);
+                this.contactGroupCtrlList = this.factory.load(this);
             }catch(Exception e){
                 DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
             }
         } else {
             this.factory = new ContactGroupFactory();
-            this.contactGroupCtrlSet = new ContactGroupControllerSet();
+            this.contactGroupCtrlList = new ContactGroupControllerList();
         }
         Button addGroup = (Button) findViewById(R.id.add_group);
         CreateGroupListener command = new CreateGroupListener(this);
         addGroup.setOnClickListener(command);
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if(this.inModif != null) {
-            try {
-                this.factory.save(this.inModif, this);
-                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_LONG);
-            } catch (IOException e) {
-                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_LONG);
-            }
-            this.inModif = null;
-        }
-        if(this.inCreation != null) {
-            try {
-                this.factory.save(this.inCreation, this);
-                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_LONG);
-                ContactGroupController ctrl = new ContactGroupController(this.inCreation, this);
-                this.contactGroupCtrlSet.add(ctrl);
-            } catch (IOException e) {
-                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_LONG);
-            }
-            this.inCreation = null;
-        }
     }
 
     @Override
@@ -121,6 +89,23 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Bundle extras = data.getExtras();
+        if(requestCode >= 0 && resultCode == RESULT_OK && extras != null) {
+            ContactGroup group = (ContactGroup)extras.get(CONTACT_GROUP);
+            try {
+                this.factory.save(group, this);
+                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_LONG);
+                ContactGroupController ctrl = this.contactGroupCtrlList.get(requestCode);
+                ctrl.setModel(group);
+            } catch (IOException e) {
+                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_LONG);
+            }
+        }
     }
 
     /**

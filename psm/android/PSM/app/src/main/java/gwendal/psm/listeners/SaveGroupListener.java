@@ -2,6 +2,7 @@ package gwendal.psm.listeners;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +30,9 @@ public class SaveGroupListener extends GroupListener {
     public void onClick(View v) {
         String name = this.cga.getGroupName().getText().toString();
         this.cga.getObserved().setName(name);
+        Intent data = new Intent();
+        data.putExtra(ContactGroupActivity.CONTACT_GROUP, this.cga.getObserved());
+        this.cga.setResult(Activity.RESULT_OK, data);
         this.cga.finish();
     }
 }

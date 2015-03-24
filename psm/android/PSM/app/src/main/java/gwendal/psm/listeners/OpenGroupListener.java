@@ -5,6 +5,7 @@ import android.view.View;
 
 import gwendal.psm.ContactGroupActivity;
 import gwendal.psm.MainActivity;
+import gwendal.psm.controllers.ContactGroupController;
 import model.ContactGroup;
 
 /**
@@ -16,21 +17,21 @@ public class OpenGroupListener extends MainListener {
     /**
      * Group to open.
      */
-    private ContactGroup group;
+    private ContactGroupController group;
 
     /**
      * Constructor.
      * @param main parent.
      * @param group Group to open.
      */
-    public OpenGroupListener(MainActivity main, ContactGroup group) {
+    public OpenGroupListener(MainActivity main, ContactGroupController group) {
         super(main);
         this.group = group;
     }
 
     @Override
     public void onClick(View v) {
-        this.main.inModif = this.group;
-        ContactGroupActivity.launchOnContactGroup(this.group, this.main);
+        int requestCode = this.main.contactGroupCtrlList.indexOf(this.group);
+        ContactGroupActivity.launchOnContactGroup(this.group.getModel(), this.main, requestCode);
     }
 }

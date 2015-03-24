@@ -97,8 +97,8 @@ public class ContactGroupFactory {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public ContactGroupControllerSet load(MainActivity main) throws IOException, ClassNotFoundException {
-        ContactGroupControllerSet res = new ContactGroupControllerSet();
+    public ContactGroupControllerList load(MainActivity main) throws IOException, ClassNotFoundException {
+        ContactGroupControllerList res = new ContactGroupControllerList();
         String[] fileList = main.fileList();
         for(int i = 0 ; i < this.nextId ; i++) {
             String fileName = fileList[i];

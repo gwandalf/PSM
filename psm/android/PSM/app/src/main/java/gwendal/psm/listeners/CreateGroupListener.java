@@ -5,6 +5,7 @@ import android.view.View;
 
 import gwendal.psm.ContactGroupActivity;
 import gwendal.psm.MainActivity;
+import gwendal.psm.controllers.ContactGroupController;
 import model.ContactGroup;
 
 /**
@@ -23,8 +24,8 @@ public class CreateGroupListener extends MainListener {
 
     @Override
     public void onClick(View v) {
-        ContactGroup cg = new ContactGroup();
-        this.main.inCreation = cg;
-        ContactGroupActivity.launchOnContactGroup(cg, this.main);
+        ContactGroupController ctrl = new ContactGroupController(this.main);
+        this.main.contactGroupCtrlList.add(ctrl);
+        ContactGroupActivity.launchOnContactGroup(null, this.main, this.main.contactGroupCtrlList.size()-1);
     }
 }

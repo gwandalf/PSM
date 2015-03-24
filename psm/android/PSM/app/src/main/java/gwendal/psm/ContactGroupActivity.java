@@ -27,7 +27,7 @@ import model.ContactGroup;
 
 public class ContactGroupActivity extends Activity {
 
-    private static final String CONTACT_GROUP = "cg";
+    public static final String CONTACT_GROUP = "cg";
 
     /**
      * Observed contact group.
@@ -103,11 +103,13 @@ public class ContactGroupActivity extends Activity {
     /**
      * Launch the activity on the specified Contact Group.
      * @param cg ContactGroup to be displayed.
+     * @param activity Launcher activity.
      */
-    public static void launchOnContactGroup(ContactGroup cg, Context ctx) {
-        Intent intent = new Intent(ctx, ContactGroupActivity.class);
-        intent.putExtra(CONTACT_GROUP, cg);
-        ctx.startActivity(intent);
+    public static void launchOnContactGroup(ContactGroup cg, Activity activity, int requestCode) {
+        Intent intent = new Intent(activity, ContactGroupActivity.class);
+        if(cg != null)
+            intent.putExtra(CONTACT_GROUP, cg);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     @Override

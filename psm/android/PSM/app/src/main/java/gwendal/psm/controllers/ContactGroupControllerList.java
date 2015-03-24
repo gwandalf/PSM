@@ -1,19 +1,20 @@
 package gwendal.psm.controllers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import model.ContactGroup;
 
 /**
  * Created by gwendal on 17/03/15.
- * Set of ContactGroupControllers.
+ * List of ContactGroupControllers.
  */
-public class ContactGroupControllerSet extends HashSet<ContactGroupController> {
+public class ContactGroupControllerList extends ArrayList<ContactGroupController> {
 
     /**
      * Constructor.
      */
-    public ContactGroupControllerSet() {
+    public ContactGroupControllerList() {
         super();
     }
 
