@@ -9,5 +9,6 @@
     <string name="create_group">Créer le groupe</string>
     <string name="ok">OK</string>
     <string name="add_contact">Ajouter un contact...</string>
+    <string name="title_activity_contacts">ContactsActivity</string>
 
 </resources>

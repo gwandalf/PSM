@@ -11,11 +11,5 @@ import android.provider.ContactsContract;
  */
 public class ContactsActivityStub {
 
-    public static void launch(Activity launcher) {
-        Intent pickContactIntent = new Intent(
-                Intent.ACTION_PICK,
-                ContactsContract.Contacts.CONTENT_URI
-        );
-        launcher.startActivityForResult(pickContactIntent, 1);
-    }
+
 }

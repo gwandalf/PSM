@@ -6,6 +6,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.test.ActivityInstrumentationTestCase2;
+import android.text.Layout;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import gwendal.psm.controllers.ContactGroupController;
 import gwendal.psm.stubs.ContactsActivityStub;
@@ -34,6 +40,11 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
     private Intent data;
 
     /**
+     * ContactsActivity.
+     */
+    private ContactsActivity contacts;
+
+    /**
      * Constructor.
      */
     public AddContactIntegrationTest() {
@@ -45,27 +56,29 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
      */
     public void test() {
         this.main = getActivity();
-        ContactGroupController cg = new ContactGroupController(this.main);
-        this.main.contactGroupCtrlList.add(cg);
+        Button addGroup = (Button) this.main.findViewById(R.id.add_group);
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
-        ContactGroupActivity.launchOnContactGroup(cg.getModel(), this.main, this.main.contactGroupCtrlList.size()-1);
+        addGroup.performClick();
         this.cga = (ContactGroupActivity) getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 5000);
-        this.cga.getObserved().setName("name");
-        //ContactsActivityStub.launch(this.cga);
-        Contact contact = new Contact("0", "contact", "0");
-        this.cga.getObserved().add(contact);
-        Instrumentation.ActivityMonitor finishMonitor = getInstrumentation().addMonitor(MainActivity.class.getName(), null, false);
-        Intent data = new Intent();
-        data.putExtra(ContactGroupActivity.CONTACT_GROUP, this.cga.getObserved());
-        if (this.cga.getParent() != null) {
-            this.cga.getParent().setResult(Activity.RESULT_OK, data);
+        assertNotNull(this.cga);
+        EditText groupName = (EditText) this.cga.findViewById(R.id.group_name);
+        groupName.setText("name");
+        Button addContact = (Button) this.cga.findViewById(R.id.add_contact);
+        Instrumentation.ActivityMonitor contactsActivityMonitor = getInstrumentation().addMonitor(ContactsActivity.class.getName(), null, false);
+        addContact.performClick();
+        this.contacts = (ContactsActivity) getInstrumentation().waitForMonitorWithTimeout(contactsActivityMonitor, 5000);
+        assertNotNull(this.contacts);
+        LinearLayout layout = (LinearLayout) this.contacts.findViewById(R.id.layout);
+        if(layout.getChildCount() != 0) {
+            Button button = (Button) layout.getChildAt(0);
+            button.performClick();
+            LinearLayout contactList = (LinearLayout) this.cga.findViewById(R.id.contact_list);
+            assertEquals(1, contactList.getChildCount());
         }
-        this.cga.finish();
-        getInstrumentation().waitForMonitorWithTimeout(finishMonitor, 5000);
-        ContactGroup group = cg.getModel();
-        assertNotNull(group);
-        assertEquals("name", group.getName());
-        assertEquals(1, group.size());
+        Button okButton = (Button) this.cga.findViewById(R.id.register_group);
+        okButton.performClick();
+        LinearLayout groupList = (LinearLayout) this.main.findViewById(R.id.group_list);
+        assertEquals(1, groupList.getChildCount());
     }
 
 }
