@@ -24,8 +24,6 @@ public class SetOnClickRunnable implements Runnable {
 
     @Override
     public void run() {
-        this.view.setText(this.model.getModel().getName());
-        OpenGroupListener open = new OpenGroupListener(this.main, this.model);
-        this.view.setOnClickListener(open);
+
     }
 }

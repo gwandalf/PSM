@@ -82,7 +82,9 @@ public class ContactGroupController {
      */
     public void setModel(ContactGroup model) {
         this.model = model;
-        this.main.runOnUiThread(new SetOnClickRunnable(this.view, this, this.main));
+        this.view.setText(this.model.getName());
+        OpenGroupListener open = new OpenGroupListener(this.main, this);
+        this.view.setOnClickListener(open);
     }
 
 }

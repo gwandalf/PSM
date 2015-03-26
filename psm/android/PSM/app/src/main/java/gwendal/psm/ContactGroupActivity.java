@@ -49,6 +49,11 @@ public class ContactGroupActivity extends Activity {
      */
     private EditText groupName;
 
+    /**
+     * Button used to add a contact.
+     */
+    private Button addContact;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +73,8 @@ public class ContactGroupActivity extends Activity {
             this.contactCtrlSet.add(ctrl);
             this.layout.addView(ctrl.getView());
         }
-        Button addContact = (Button) findViewById(R.id.add_contact);
-        AddContactListener addContactListener = new AddContactListener(this);
+        this.addContact = (Button) findViewById(R.id.add_contact);
+        AddContactListener addContactListener = new AddContactListener(this, false);
         addContact.setOnClickListener(addContactListener);
         Button okButton = (Button) findViewById(R.id.register_group);
         this.groupName = (EditText) findViewById(R.id.group_name);
@@ -77,6 +82,13 @@ public class ContactGroupActivity extends Activity {
         okButton.setOnClickListener(ok);
     }
 
+    /**
+     * Sets the addContact listener.
+     * @param listener AddContactListener.
+     */
+    public void setAddContactListener(AddContactListener listener) {
+        this.addContact.setOnClickListener(listener);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

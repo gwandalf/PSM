@@ -47,6 +47,8 @@ public class MainActivity extends Activity {
      */
     private LinearLayout layout;
 
+    public Button addGroup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,7 +66,7 @@ public class MainActivity extends Activity {
             this.factory = new ContactGroupFactory();
             this.contactGroupCtrlList = new ContactGroupControllerList();
         }
-        Button addGroup = (Button) findViewById(R.id.add_group);
+        addGroup = (Button) findViewById(R.id.add_group);
         CreateGroupListener command = new CreateGroupListener(this);
         addGroup.setOnClickListener(command);
     }
