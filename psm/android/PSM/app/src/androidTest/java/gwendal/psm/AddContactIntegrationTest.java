@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 
 import gwendal.psm.listeners.AddContactListener;
 
+import static java.lang.Thread.sleep;
+
 /**
  * Created by gwendal on 19/03/15.
  * Create a new ContactGroup and ad a contact to it.
@@ -46,80 +48,54 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
 
     /**
      * Test.
-     * TODO : for all touch to the UI, have nice functions like "static runOnUIThread(Button b)"
      */
     public void test() {
         setActivityInitialTouchMode(false);
         main = getActivity();
-        Log.d("START", "Start test");
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
         LinearLayout groupList = (LinearLayout) main.findViewById(R.id.group_list);
-        assertEquals(0, groupList.getChildCount());
+        int count = groupList.getChildCount();
         assertNotNull(main.addGroup);
-        Log.d("BEFORE", "before performClick");
-        main.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                main.addGroup.performClick();
-            }
-        });
+        Utils.performClick(main, main.addGroup);
         cga = (ContactGroupActivity) getInstrumentation().waitForMonitor(activityMonitor);
         assertNotNull(cga);
-        main.runOnUiThread(new Runnable() {
+        AddContactListener addContactListener = new AddContactListener(cga, true);
+        cga.setAddContactListener(addContactListener);
+        final EditText groupName = (EditText) cga.findViewById(R.id.group_name);
+        cga.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                AddContactListener addContactListener = new AddContactListener(cga, true);
-                cga.setAddContactListener(addContactListener);
-                EditText groupName = (EditText) cga.findViewById(R.id.group_name);
                 groupName.setText("name");
-                Button addContact = (Button) cga.findViewById(R.id.add_contact);
-                Log.d("MIDDLE", "3rd mark");
-                Instrumentation.ActivityMonitor contactsActivityMonitor = getInstrumentation().addMonitor(ContactsActivity.class.getName(), null, false);
-                addContact.performClick();
             }
         });
+        Button addContact = (Button) cga.findViewById(R.id.add_contact);
+        Instrumentation.ActivityMonitor contactsActivityMonitor = getInstrumentation().addMonitor(ContactsActivity.class.getName(), null, false);
+        Utils.performClick(cga, addContact);
         contacts = (ContactsActivity) getInstrumentation().waitForMonitor(contactsActivityMonitor);
         assertNotNull(contacts);
-        main.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LinearLayout layout = (LinearLayout) contacts.findViewById(R.id.layout);
-                Log.d("MIDDLE", "Middle test");
-                if(layout.getChildCount() != 0) {
-                    Button button = (Button) layout.getChildAt(0);
-                    button.performClick();
-                    LinearLayout contactList = (LinearLayout) cga.findViewById(R.id.contact_list);
-                    assertEquals(1, contactList.getChildCount());
-                }
-                Button okButton = (Button) cga.findViewById(R.id.register_group);
-                okButton.performClick();
-                assertEquals(1, groupList.getChildCount());
-                Instrumentation.ActivityMonitor cgMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
-                View groupView = main.contactGroupCtrlList.get(0).getView();
-                groupView.performClick();
+        LinearLayout layout = (LinearLayout) contacts.findViewById(R.id.layout);
+        LinearLayout contactList = (LinearLayout) cga.findViewById(R.id.contact_list);
+        if(layout.getChildCount() != 0) {
+            Button button = (Button) layout.getChildAt(0);
+            Utils.performClick(cga, button);
+            try {
+                sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-    }
-
-    public class MainActivityRunnable implements Runnable {
-
-        private MainActivity main;
-
-        public MainActivityRunnable(MainActivity main) {
-            this.main = main;
+            assertEquals(1, contactList.getChildCount());
         }
-
-        @Override
-        public void run() {
-
-
-
-
-
-
-            cga = (ContactGroupActivity) getInstrumentation().waitForMonitorWithTimeout(cgMonitor, 5000);
-            assertNotNull(cga);
-        }
+        Button okButton = (Button) cga.findViewById(R.id.register_group);
+        Utils.performClick(cga, okButton);
+        cga = null;
+        assertEquals(count+1, groupList.getChildCount());
+        Instrumentation.ActivityMonitor cgMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
+        View groupView = main.contactGroupCtrlList.get(0).getView();
+        Utils.performClick(main, groupView);
+        cga = (ContactGroupActivity) getInstrumentation().waitForMonitor(cgMonitor);
+        assertNotNull(cga);
+        cga.finish();
+        main.finish();
     }
 
 }

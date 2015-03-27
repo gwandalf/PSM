@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -40,7 +41,7 @@ public class MainActivity extends Activity {
     /**
      * ContactGroupFactory.
      */
-    public ContactGroupFactory factory;
+    public static ContactGroupFactory factory;
 
     /**
      * Layout.
@@ -56,14 +57,17 @@ public class MainActivity extends Activity {
         this.layout = (LinearLayout) findViewById(R.id.group_list);
         List<String> fileList = Arrays.asList(fileList());
         if(fileList.contains(ContactGroupFactory.FILE_NAME)) {
+            Log.d("FACTORY", "file is present");
             try {
-                this.factory = ContactGroupFactory.loadInstance(this);
-                this.contactGroupCtrlList = this.factory.load(this);
+                factory = ContactGroupFactory.loadInstance(this);
+                Log.d("FACTORY", "loadInstance");
+                this.contactGroupCtrlList = factory.load(this);
             }catch(Exception e){
                 DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
             }
         } else {
-            this.factory = new ContactGroupFactory();
+            Log.d("FACTORY", "file is absent");
+            factory = new ContactGroupFactory();
             this.contactGroupCtrlList = new ContactGroupControllerList();
         }
         addGroup = (Button) findViewById(R.id.add_group);
@@ -96,18 +100,29 @@ public class MainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bundle extras = data.getExtras();
-        if(requestCode >= 0 && resultCode == RESULT_OK && extras != null) {
+        if(requestCode >= 0 && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
+            Bundle extras = data.getExtras();
             ContactGroup group = (ContactGroup)extras.get(CONTACT_GROUP);
             try {
-                this.factory.save(group, this);
-                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_LONG);
+                factory.save(group, this);
+                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_SHORT).show();
                 ContactGroupController ctrl = this.contactGroupCtrlList.get(requestCode);
                 ctrl.setModel(group);
             } catch (IOException e) {
-                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_LONG);
+                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        try {
+            factory.saveInstance(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Problème de sauvegarde", Toast.LENGTH_SHORT).show();
+        }
+        super.onDestroy();
     }
 
     /**

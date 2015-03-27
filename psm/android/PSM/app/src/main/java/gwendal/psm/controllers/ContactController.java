@@ -49,7 +49,9 @@ public class ContactController {
      * @param model
      */
     public ContactController(Context parent, Contact model) {
-
+        this.model = model;
+        this.view = new TextView(parent);
+        this.view.setText(this.model.getName());
     }
 
     public Contact getModel() {

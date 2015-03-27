@@ -1,6 +1,7 @@
 package gwendal.psm.controllers;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -10,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +22,7 @@ import model.ContactGroup;
  * Created by gwendal on 21/03/15.
  * Factory charged of the creation, serialization and loading of ContactGroups.
  */
-public class ContactGroupFactory {
+public class ContactGroupFactory implements Serializable {
 
     /**
      * Name of the serialization file of the instance of the factory.
@@ -47,6 +49,14 @@ public class ContactGroupFactory {
      */
     public ContactGroupFactory() {
         this.nextId = 0;
+    }
+
+    public void saveInstance(MainActivity main) throws IOException {
+        FileOutputStream fos = main.openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
+        ObjectOutputStream os = new ObjectOutputStream(fos);
+        os.writeObject(this);
+        os.close();
+        fos.close();
     }
 
     /**
@@ -100,9 +110,12 @@ public class ContactGroupFactory {
     public ContactGroupControllerList load(MainActivity main) throws IOException, ClassNotFoundException {
         ContactGroupControllerList res = new ContactGroupControllerList();
         String[] fileList = main.fileList();
-        for(int i = 0 ; i < this.nextId ; i++) {
+        Log.d("FACTORY", "NextId = " + this.nextId);
+        for(int i = 0 ; i < fileList.length ; i++) {
             String fileName = fileList[i];
+            Log.d("FACTORY", "file : " + fileName);
             if(fileName.startsWith(PREFIX)) {
+                Log.d("FACTORY", "inside if");
                 FileInputStream fileInputStream = main.openFileInput(fileName);
                 ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
                 ContactGroup cg = (ContactGroup) objectInputStream.readObject();

@@ -64,7 +64,7 @@ public class ContactGroupActivity extends Activity {
             this.observed = (ContactGroup) data.get(CONTACT_GROUP);
         } else {
             Log.d("DATA", "data == null");
-            this.observed = new ContactGroup();
+            this.observed = MainActivity.factory.makeContactGroup("");
         }
         this.layout = (LinearLayout) findViewById(R.id.contact_list);
         this.contactCtrlSet = new HashSet<ContactController>();
@@ -78,6 +78,7 @@ public class ContactGroupActivity extends Activity {
         addContact.setOnClickListener(addContactListener);
         Button okButton = (Button) findViewById(R.id.register_group);
         this.groupName = (EditText) findViewById(R.id.group_name);
+        this.groupName.setText(this.observed.getName());
         SaveGroupListener ok = new SaveGroupListener(this);
         okButton.setOnClickListener(ok);
     }
