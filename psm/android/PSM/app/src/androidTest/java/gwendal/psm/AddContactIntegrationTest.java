@@ -30,11 +30,6 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
     private static ContactGroupActivity cga;
 
     /**
-     * Contact data.
-     */
-    private Intent data;
-
-    /**
      * ContactsActivity.
      */
     private static ContactsActivity contacts;
@@ -52,12 +47,26 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
     public void test() {
         setActivityInitialTouchMode(false);
         main = getActivity();
-        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
+        addMyGroup(this, main);
+        Instrumentation.ActivityMonitor cgMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
+        View groupView = main.contactGroupCtrlList.get(0).getView();
+        Utils.performClick(main, groupView);
+        cga = (ContactGroupActivity) getInstrumentation().waitForMonitor(cgMonitor);
+        assertNotNull(cga);
+        cga.finish();
+        main.finish();
+    }
+
+    /**
+     * Adds a group containing only myself.
+     */
+    public static void addMyGroup(ActivityInstrumentationTestCase2 testCase, MainActivity main) {
+        Instrumentation.ActivityMonitor activityMonitor = testCase.getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
         LinearLayout groupList = (LinearLayout) main.findViewById(R.id.group_list);
         int count = groupList.getChildCount();
         assertNotNull(main.addGroup);
         Utils.performClick(main, main.addGroup);
-        cga = (ContactGroupActivity) getInstrumentation().waitForMonitor(activityMonitor);
+        ContactGroupActivity cga = (ContactGroupActivity) testCase.getInstrumentation().waitForMonitor(activityMonitor);
         assertNotNull(cga);
         AddContactListener addContactListener = new AddContactListener(cga, true);
         cga.setAddContactListener(addContactListener);
@@ -65,19 +74,17 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
         cga.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                groupName.setText("name");
+                groupName.setText("MyGroup");
             }
         });
         Button addContact = (Button) cga.findViewById(R.id.add_contact);
-        Instrumentation.ActivityMonitor contactsActivityMonitor = getInstrumentation().addMonitor(ContactsActivity.class.getName(), null, false);
+        Instrumentation.ActivityMonitor contactsActivityMonitor = testCase.getInstrumentation().addMonitor(ContactsActivity.class.getName(), null, false);
         Utils.performClick(cga, addContact);
-        contacts = (ContactsActivity) getInstrumentation().waitForMonitor(contactsActivityMonitor);
+        contacts = (ContactsActivity) testCase.getInstrumentation().waitForMonitor(contactsActivityMonitor);
         assertNotNull(contacts);
-        LinearLayout layout = (LinearLayout) contacts.findViewById(R.id.layout);
         LinearLayout contactList = (LinearLayout) cga.findViewById(R.id.contact_list);
-        if(layout.getChildCount() != 0) {
-            Button button = (Button) layout.getChildAt(0);
-            Utils.performClick(cga, button);
+        if(contacts.me != null) {
+            Utils.performClick(contacts, contacts.me);
             try {
                 sleep(5000);
             } catch (InterruptedException e) {
@@ -89,13 +96,6 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
         Utils.performClick(cga, okButton);
         cga = null;
         assertEquals(count+1, groupList.getChildCount());
-        Instrumentation.ActivityMonitor cgMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
-        View groupView = main.contactGroupCtrlList.get(0).getView();
-        Utils.performClick(main, groupView);
-        cga = (ContactGroupActivity) getInstrumentation().waitForMonitor(cgMonitor);
-        assertNotNull(cga);
-        cga.finish();
-        main.finish();
     }
 
 }

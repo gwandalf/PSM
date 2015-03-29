@@ -17,6 +17,11 @@ import gwendal.psm.listeners.GetContactUriListener;
 
 public class ContactsActivity extends Activity {
 
+    /**
+     * Add myself.
+     */
+    public Button me;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,8 +31,11 @@ public class ContactsActivity extends Activity {
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         while(cur.moveToNext()) {
             String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
+            String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
             Uri contactUri = Uri.withAppendedPath(ContactsContract.Contacts.CONTENT_URI, id);
             Button button = new Button(this);
+            if(name.equals("Moi"))
+                this.me = button;
             GetContactUriListener getContact = new GetContactUriListener(contactUri, this);
             button.setOnClickListener(getContact);
             layout.addView(button);

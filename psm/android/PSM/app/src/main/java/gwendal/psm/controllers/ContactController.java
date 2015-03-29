@@ -36,9 +36,20 @@ public class ContactController {
         Uri contactUri = data.getData();
         Cursor cursor = parent.getContentResolver().query(contactUri, null, null, null, null);
         cursor.moveToFirst();
+        int idColumn = cursor.getColumnIndex(ContactsContract.Contacts._ID);
         int nameColumn = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+        int hasPhoneColumn = cursor.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+        String id = cursor.getString(idColumn);
+        String hasPhone = cursor.getString(hasPhoneColumn);
         String name = cursor.getString(nameColumn);
-        this.model = new Contact("id", name, "number");
+        String number = "";
+        if(hasPhone.equalsIgnoreCase("1")) {
+            Cursor phones = parent.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + id, null, null);
+            phones.moveToFirst();
+            int numberColumn = phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            number = phones.getString(numberColumn);
+        }
+        this.model = new Contact(name, number);
         this.view = new TextView(parent);
         this.view.setText(this.model.getName());
     }

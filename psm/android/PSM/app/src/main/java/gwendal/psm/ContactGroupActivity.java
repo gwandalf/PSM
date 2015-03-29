@@ -21,6 +21,7 @@ import java.util.HashSet;
 import gwendal.psm.listeners.AddContactListener;
 import gwendal.psm.listeners.SaveGroupListener;
 import gwendal.psm.controllers.ContactController;
+import gwendal.psm.listeners.WriteSmsListener;
 import model.Contact;
 import model.ContactGroup;
 
@@ -81,6 +82,9 @@ public class ContactGroupActivity extends Activity {
         this.groupName.setText(this.observed.getName());
         SaveGroupListener ok = new SaveGroupListener(this);
         okButton.setOnClickListener(ok);
+        Button writeButton = (Button) findViewById(R.id.write_sms);
+        WriteSmsListener writeSmsListener = new WriteSmsListener(this.observed);
+        writeButton.setOnClickListener(writeSmsListener);
     }
 
     /**

@@ -9,11 +9,6 @@ import java.io.Serializable;
 public class Contact implements Serializable {
 
     /**
-     * ID.
-     */
-    private String id;
-
-    /**
      * Name.
      */
     private String name;
@@ -25,12 +20,10 @@ public class Contact implements Serializable {
 
     /**
      * Constructor.
-     * @param id ID.
      * @param name Name.
      * @param number Phone number.
      */
-    public Contact(String id, String name, String number) {
-        this.id = id;
+    public Contact(String name, String number) {
         this.name = name;
         this.number = number;
     }
@@ -42,7 +35,6 @@ public class Contact implements Serializable {
 
         Contact contact = (Contact) o;
 
-        if (id != null ? !id.equals(contact.id) : contact.id != null) return false;
         if (name != null ? !name.equals(contact.name) : contact.name != null) return false;
         if (number != null ? !number.equals(contact.number) : contact.number != null) return false;
 
@@ -51,18 +43,9 @@ public class Contact implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (number != null ? number.hashCode() : 0);
+        int result = name.hashCode();
+        result = 31 * result + number.hashCode();
         return result;
-    }
-
-    /**
-     * Gets the ID.
-     * @return the ID.
-     */
-    public String getId() {
-        return this.id;
     }
 
     /**

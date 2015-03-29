@@ -1,24 +1,53 @@
 package gwendal.psm.listeners;
 
-import android.content.Context;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.telephony.SmsManager;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 
-import java.security.acl.Group;
-
-import gwendal.psm.ContactGroupActivity;
+import model.Contact;
+import model.ContactGroup;
 
 /**
- * Created by gwendal on 12/03/15.
- * Launches the SMS app on the selected group.
+ * Created by gwendal on 29/03/15.
  */
-public class SendSmsListener extends GroupListener {
+public class SendSmsListener implements View.OnClickListener {
 
-    public SendSmsListener(ContactGroupActivity cga) {
-        super(cga);
+    /**
+     * Group of recipients.
+     */
+    private ContactGroup group;
+
+    /**
+     * Sms text.
+     */
+    private EditText smsText;
+
+    /**
+     * Constructor.
+     * @param group ContactGroup of recipients.
+     * @param smsText SMS content.
+     */
+    public SendSmsListener(ContactGroup group, EditText smsText) {
+        this.group = group;
+        this.smsText = smsText;
     }
 
     @Override
     public void onClick(View v) {
-
+        Log.d("SEND", "debut");
+        SmsManager manager = SmsManager.getDefault();
+        PendingIntent sentPI = null;//PendingIntent.getBroadcast(v.getContext(), 0, new Intent("SMS_SENT"), 0);
+        PendingIntent deliveredPI = null;//PendingIntent.getBroadcast(v.getContext(), 0, new Intent("SMS_DELIVERED"), 0);
+        Log.d("SEND", "avant le for");
+        for(Contact c : this.group) {
+            Log.d("SEND", "Tentative pour " + c.getName());
+            if(!c.getNumber().equals("")) {
+                Log.d("SEND", "Envoi au " + c.getNumber());
+                manager.sendTextMessage(c.getNumber(), null, this.smsText.getText().toString(), sentPI, deliveredPI);
+            }
+        }
     }
 }
