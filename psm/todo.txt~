@@ -1,7 +1,0 @@
-
-buffer :
-destruction de groupes de contact
-retirer des contacts d'un groupe
-interfacer appli téléphone avec appli ordinateur.
-Refactorer les ensembles de controlleurs : doivent gérer la serialization le plus possible. Font office de Factory pour les models.
-Utiliser des activités de test pour les activités externes, comme les contacts. Faire une activité qui se construit à partir de celle des contacts, qui remplit exactement le même rôle et qui facilite l'extraction des données (enregistrement direct lors de la construction). Seul le test utilisera cette activité. La vérification du bon fonctionnement de l'application se fera par une double validation (du test et d'une utilisation réelle conforme aux attentes).
