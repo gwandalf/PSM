@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import gwendal.psm.MainActivity;
+import gwendal.psm.R;
 import gwendal.psm.listeners.OpenGroupListener;
 import model.ContactGroup;
 
@@ -38,9 +39,12 @@ public class ContactGroupController {
      */
     public ContactGroupController(MainActivity main) {
         this.main = main;
-        this.view = new TextView(main);
+        this.view = new TextView(main, null, R.attr.style);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        this.main.runOnUiThread(new TempRunnable(this.main, this.view, params));
+        params.setMargins(16, 16, 16, 16);
+        main.getLayout().addView(this.view, params);
+        OpenGroupListener open = new OpenGroupListener(main, this);
+        this.view.setOnClickListener(open);
     }
 
     /**
@@ -52,9 +56,10 @@ public class ContactGroupController {
     public ContactGroupController(ContactGroup model, MainActivity main) {
         this.main = main;
         this.model = model;
-        this.view = new TextView(main);
+        this.view = new TextView(main, null, R.attr.style);
         this.view.setText(this.model.getName());
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(16, 16, 16, 16);
         main.getLayout().addView(this.view, params);
         OpenGroupListener open = new OpenGroupListener(main, this);
         this.view.setOnClickListener(open);

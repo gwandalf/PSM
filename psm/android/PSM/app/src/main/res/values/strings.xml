@@ -8,10 +8,10 @@
     <string name="title_activity_contact_group">ContactGroupActivity</string>
     <string name="create_group">Créer le groupe</string>
     <string name="ok">OK</string>
-    <string name="add_contact">Ajouter un contact...</string>
+    <string name="add_contact">+</string>
     <string name="title_activity_contacts">ContactsActivity</string>
     <string name="title_activity_sms">SmsActivity</string>
     <string name="send">Envoyer</string>
-    <string name="write">Écrire un SMS</string>
+    <string name="write">SMS</string>
 
 </resources>

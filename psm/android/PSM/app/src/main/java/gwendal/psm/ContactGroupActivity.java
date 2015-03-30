@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -72,7 +73,9 @@ public class ContactGroupActivity extends Activity {
         for(Contact c : this.observed) {
             ContactController ctrl = new ContactController(this, c);
             this.contactCtrlSet.add(ctrl);
-            this.layout.addView(ctrl.getView());
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(16, 16, 16, 16);
+            this.layout.addView(ctrl.getView(), params);
         }
         this.addContact = (Button) findViewById(R.id.add_contact);
         AddContactListener addContactListener = new AddContactListener(this, false);
@@ -135,7 +138,9 @@ public class ContactGroupActivity extends Activity {
         if(resultCode == RESULT_OK) {
             ContactController ctrl = new ContactController(this, data);
             this.observed.add(ctrl.getModel());
-            this.layout.addView(ctrl.getView(), ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.setMargins(16, 16, 16, 16);
+            this.layout.addView(ctrl.getView(), params);
         }
         else
             DialogFactory.showErrorDialog("Le contact n'a pas pu être ajouté.", this);

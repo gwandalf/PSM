@@ -9,6 +9,7 @@ import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.TextView;
 
+import gwendal.psm.R;
 import model.Contact;
 
 /**
@@ -50,7 +51,7 @@ public class ContactController {
             number = phones.getString(numberColumn);
         }
         this.model = new Contact(name, number);
-        this.view = new TextView(parent);
+        this.view = new TextView(parent, null, R.attr.style);
         this.view.setText(this.model.getName());
     }
 
@@ -61,7 +62,7 @@ public class ContactController {
      */
     public ContactController(Context parent, Contact model) {
         this.model = model;
-        this.view = new TextView(parent);
+        this.view = new TextView(parent, null, R.attr.style);
         this.view.setText(this.model.getName());
     }
 
