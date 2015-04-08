@@ -6,6 +6,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import model.Contact;
 import model.ContactGroup;
@@ -47,6 +48,7 @@ public class SendSmsListener implements View.OnClickListener {
             if(!c.getNumber().equals("")) {
                 Log.d("SEND", "Envoi au " + c.getNumber());
                 manager.sendTextMessage(c.getNumber(), null, this.smsText.getText().toString(), sentPI, deliveredPI);
+                Toast.makeText(v.getContext(), "SMS envoyé", Toast.LENGTH_SHORT).show();
             }
         }
     }
