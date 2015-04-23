@@ -56,6 +56,11 @@ public class ContactGroupActivity extends Activity {
      */
     private Button addContact;
 
+    /**
+     * Button for saving the group.
+     */
+    private Button okButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +85,7 @@ public class ContactGroupActivity extends Activity {
         this.addContact = (Button) findViewById(R.id.add_contact);
         AddContactListener addContactListener = new AddContactListener(this, false);
         addContact.setOnClickListener(addContactListener);
-        Button okButton = (Button) findViewById(R.id.register_group);
+        this.okButton = (Button) findViewById(R.id.register_group);
         this.groupName = (EditText) findViewById(R.id.group_name);
         this.groupName.setText(this.observed.getName());
         SaveGroupListener ok = new SaveGroupListener(this);
@@ -144,6 +149,15 @@ public class ContactGroupActivity extends Activity {
         }
         else
             DialogFactory.showErrorDialog("Le contact n'a pas pu être ajouté.", this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        String name = this.groupName.getText().toString();
+        if("".equals(name))
+            super.onBackPressed();
+        else
+            this.okButton.performClick();
     }
 
     /**

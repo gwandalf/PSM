@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import gwendal.psm.DialogFactory;
 import model.Contact;
 import model.ContactGroup;
 
@@ -38,18 +39,14 @@ public class SendSmsListener implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Log.d("SEND", "debut");
         SmsManager manager = SmsManager.getDefault();
         PendingIntent sentPI = null;//PendingIntent.getBroadcast(v.getContext(), 0, new Intent("SMS_SENT"), 0);
         PendingIntent deliveredPI = null;//PendingIntent.getBroadcast(v.getContext(), 0, new Intent("SMS_DELIVERED"), 0);
-        Log.d("SEND", "avant le for");
         for(Contact c : this.group) {
-            Log.d("SEND", "Tentative pour " + c.getName());
             if(!c.getNumber().equals("")) {
-                Log.d("SEND", "Envoi au " + c.getNumber());
                 manager.sendTextMessage(c.getNumber(), null, this.smsText.getText().toString(), sentPI, deliveredPI);
-                Toast.makeText(v.getContext(), "SMS envoyé", Toast.LENGTH_SHORT).show();
             }
         }
+        DialogFactory.showInformationDialog("SMS envoyé à tous les membres du groupe " + this.group.getName() + ".", v.getContext());
     }
 }
