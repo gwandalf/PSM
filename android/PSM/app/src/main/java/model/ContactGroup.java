@@ -1,20 +1,12 @@
 package model;
 
 import java.io.Serializable;
-import java.util.HashSet;
-
-import interfaces.ContactGroupInterface;
 
 /**
  * Created by gwendal on 15/02/15.
  * Contact Group.
  */
-public class ContactGroup extends HashSet<Contact> implements ContactGroupInterface, Serializable {
-
-    /**
-     * Id.
-     */
-    private int id;
+public class ContactGroup extends ObservableList<Contact> implements Serializable {
 
     //Name.
     private String name;
@@ -23,35 +15,39 @@ public class ContactGroup extends HashSet<Contact> implements ContactGroupInterf
      * Constructor.
      */
     public ContactGroup() {
-        this.id = 0;
+        super();
         this.name = "(Sans nom)";
     }
 
     /**
      * Constructor.
-     * @param id Id.
      * @param name Name.
      */
-    public ContactGroup(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public void setName(String name) {
+    public ContactGroup(String name) {
+        super();
         this.name = name;
     }
 
     /**
-     * Gets the id.
-     * @return Id.
+     * Opens this group.
      */
-    public int getId() {
-        return id;
+    public void open() {
+        GroupList.INSTANCE.setActive(this);
+    }
+
+    /**
+     * Gets the name.
+     * @return The name.
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Sets the name.
+     * @param name The name.
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

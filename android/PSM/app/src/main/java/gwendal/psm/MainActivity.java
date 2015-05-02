@@ -24,10 +24,12 @@ import java.util.List;
 
 import gwendal.psm.controllers.ContactGroupControllerList;
 import gwendal.psm.controllers.ContactGroupFactory;
+import gwendal.psm.controllers.GroupButtonList;
 import gwendal.psm.listeners.CreateGroupListener;
 import gwendal.psm.controllers.ContactGroupController;
 import gwendal.psm.listeners.OpenGroupListener;
 import model.ContactGroup;
+import model.GroupList;
 
 import static gwendal.psm.ContactGroupActivity.CONTACT_GROUP;
 
@@ -55,6 +57,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GroupList.INSTANCE.addObserver(GroupButtonList.INSTANCE);
         this.layout = (LinearLayout) findViewById(R.id.group_list);
         List<String> fileList = Arrays.asList(fileList());
         if(fileList.contains(ContactGroupFactory.FILE_NAME)) {
