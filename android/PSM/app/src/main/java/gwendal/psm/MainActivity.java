@@ -19,6 +19,7 @@ import java.util.List;
 import gwendal.psm.controllers.GroupViewList;
 import gwendal.psm.listeners.CreateGroupListener;
 import model.GroupList;
+import model.GroupListStub;
 
 
 public class MainActivity extends Activity {
@@ -34,22 +35,27 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        LinearLayout layout = (LinearLayout) findViewById(R.id.group_list);
-        GroupViewList.INSTANCE.parentContext = this;
-        GroupViewList.INSTANCE.parentLayout = layout;
         List<String> fileList = Arrays.asList(fileList());
         if(fileList.contains(FILE_NAME)) {
             Log.d("FACTORY", "file is present");
             try {
                 Log.d("FACTORY", "loadInstance");
                 FileInputStream fis = openFileInput(FILE_NAME);
-                GroupList.INSTANCE.load(fis);
+                GroupList.INSTANCE = GroupListStub.load(fis);
             }catch(Exception e){
                 DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
+                GroupList.INSTANCE = new GroupListStub();
             }
         } else {
             Log.d("FACTORY", "file is absent");
+            GroupList.INSTANCE = new GroupListStub();
         }
+        LinearLayout layout = (LinearLayout) findViewById(R.id.group_list);
+        GroupViewList.INSTANCE.observed = GroupList.INSTANCE;
+        GroupViewList.INSTANCE.observed.addObserver(GroupViewList.INSTANCE);
+        GroupViewList.INSTANCE.parentContext = this;
+        GroupViewList.INSTANCE.parentLayout = layout;
+        GroupViewList.INSTANCE.forceUpdate();
         addGroup = (Button) findViewById(R.id.add_group);
         CreateGroupListener command = new CreateGroupListener();
         addGroup.setOnClickListener(command);

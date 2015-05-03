@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import model.Contact;
+import model.ContactGroup;
 import model.ModelItem;
 import model.ObservableList;
 
@@ -42,6 +44,22 @@ public class ObserverList<T extends ModelItem> implements Observer {
     public ObserverList() {
         super();
         this.modelViewMap = new HashMap<T, ItemTextView>();
+    }
+
+    /**
+     * Forces this instance to create and add a view for all the contacts that weren't represented.
+     */
+    public void forceUpdate() {
+        for(T item : this.observed.getList()) {
+            ItemTextView viewItem;
+            if(this.modelViewMap.containsKey(item)) {
+                viewItem = this.modelViewMap.get(item);
+            } else {
+                viewItem = new ItemTextView(this.parentContext, item);
+                this.modelViewMap.put(item, viewItem);
+            }
+            this.parentLayout.addView(viewItem.textView, viewItem.params);
+        }
     }
 
     @Override

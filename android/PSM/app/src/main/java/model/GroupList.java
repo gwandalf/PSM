@@ -21,5 +21,5 @@ public class GroupList {
     /**
      * Only Instance of this class.
      */
-    public static final GroupListStub INSTANCE = new GroupListStub();
+    public static GroupListStub INSTANCE;
 }

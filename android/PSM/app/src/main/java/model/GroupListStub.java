@@ -39,15 +39,12 @@ public class GroupListStub extends ObservableList<ContactGroup> {
      * Loads the saved groupList from the specified file.
      * @param saveFile Save file.
      */
-    public void load(FileInputStream saveFile) throws IOException, ClassNotFoundException {
+    public static GroupListStub load(FileInputStream saveFile) throws IOException, ClassNotFoundException {
         ObjectInputStream objectInputStream = new ObjectInputStream(saveFile);
         GroupListStub groupList = (GroupListStub) objectInputStream.readObject();
-        for(ContactGroup group : groupList.list) {
-            add(group);
-            Log.d("FACTORY", "group added");
-        }
         objectInputStream.close();
         saveFile.close();
+        return groupList;
     }
 
     /**

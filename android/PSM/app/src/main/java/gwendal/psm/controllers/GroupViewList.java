@@ -38,8 +38,6 @@ public final class GroupViewList extends ObserverList<ContactGroup> {
     private GroupViewList() {
         super();
         this.contactViews = new HashMap<ContactGroup, ContactViewList>();
-        this.observed = GroupList.INSTANCE;
-        this.observed.addObserver(this);
     }
 
     @Override
