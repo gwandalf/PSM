@@ -16,71 +16,10 @@ import java.io.Serializable;
  * Group list.
  * Singleton.
  */
-public final class GroupList extends ObservableList<ContactGroup> implements Serializable {
+public class GroupList {
 
     /**
      * Only Instance of this class.
      */
-    public static final GroupList INSTANCE = new GroupList();
-
-    /**
-     * Save file name.
-     */
-    public static final String FILE_NAME = "Save.ser";
-
-    /**
-     * Active Group.
-     */
-    private ContactGroup active;
-
-    /**
-     * Constructor.
-     */
-    private GroupList() {
-        super();
-    }
-
-    /**
-     * Saves the Group list in the specified file.
-     * @param saveFile Save file.
-     */
-    public void save(OutputStream saveFile) throws IOException {
-        ObjectOutputStream os = new ObjectOutputStream(saveFile);
-        os.writeObject(this);
-        os.close();
-        saveFile.close();
-    }
-
-    /**
-     * Loads the saved groupList from the specified file.
-     * @param saveFile Save file.
-     */
-    public void load(FileInputStream saveFile) throws IOException, ClassNotFoundException {
-        ObjectInputStream objectInputStream = new ObjectInputStream(saveFile);
-        GroupList groupList = (GroupList) objectInputStream.readObject();
-        for(ContactGroup group : groupList.list) {
-            add(group);
-            Log.d("FACTORY", "group added");
-        }
-        objectInputStream.close();
-        saveFile.close();
-    }
-
-    /**
-     * Gets the active group.
-     * @return The active group.
-     */
-    public ContactGroup getActive() {
-        return this.active;
-    }
-
-    /**
-     * Sets the active group.
-     * @param active The new active group.
-     */
-    public void setActive(ContactGroup active) {
-        this.active = active;
-        setChanged();
-        notifyObservers("active");
-    }
+    public static final GroupListStub INSTANCE = new GroupListStub();
 }

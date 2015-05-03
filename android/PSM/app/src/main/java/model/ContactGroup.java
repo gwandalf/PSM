@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by gwendal on 15/02/15.
  * Contact Group.
  */
-public class ContactGroup extends ObservableList<Contact> implements Serializable, ModelItem {
+public class ContactGroup extends ObservableList<Contact> implements ModelItem {
 
     //Name.
     private String name;

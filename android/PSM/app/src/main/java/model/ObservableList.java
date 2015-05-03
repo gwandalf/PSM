@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -7,7 +8,7 @@ import java.util.Observable;
  * Created by gwendal on 02/05/15.
  * Observable list.
  */
-public class ObservableList<T> extends Observable {
+public class ObservableList<T extends Serializable> extends Observable implements Serializable {
 
     /**
      * Item list.

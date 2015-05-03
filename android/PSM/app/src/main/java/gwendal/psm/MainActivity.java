@@ -23,6 +23,11 @@ import model.GroupList;
 
 public class MainActivity extends Activity {
 
+    /**
+     * Save file name.
+     */
+    public static final String FILE_NAME = "Save.ser";
+
     public Button addGroup;
 
     @Override
@@ -33,11 +38,11 @@ public class MainActivity extends Activity {
         GroupViewList.INSTANCE.parentContext = this;
         GroupViewList.INSTANCE.parentLayout = layout;
         List<String> fileList = Arrays.asList(fileList());
-        if(fileList.contains(GroupList.FILE_NAME)) {
+        if(fileList.contains(FILE_NAME)) {
             Log.d("FACTORY", "file is present");
             try {
                 Log.d("FACTORY", "loadInstance");
-                FileInputStream fis = openFileInput(GroupList.FILE_NAME);
+                FileInputStream fis = openFileInput(FILE_NAME);
                 GroupList.INSTANCE.load(fis);
             }catch(Exception e){
                 DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
@@ -75,7 +80,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         try {
-            FileOutputStream fos = openFileOutput(GroupList.FILE_NAME, Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
             GroupList.INSTANCE.save(fos);
         } catch (IOException e) {
             e.printStackTrace();
