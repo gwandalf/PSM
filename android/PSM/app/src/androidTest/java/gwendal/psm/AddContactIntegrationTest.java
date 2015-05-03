@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import gwendal.psm.controllers.GroupViewList;
 import gwendal.psm.listeners.AddContactListener;
 
 import static java.lang.Thread.sleep;
@@ -49,7 +50,7 @@ public class AddContactIntegrationTest extends ActivityInstrumentationTestCase2<
         main = getActivity();
         addMyGroup(this, main);
         Instrumentation.ActivityMonitor cgMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);
-        View groupView = main.contactGroupCtrlList.get(0).getView();
+        View groupView = GroupViewList.INSTANCE.parentLayout.getChildAt(0);
         Utils.performClick(main, groupView);
         cga = (ContactGroupActivity) getInstrumentation().waitForMonitor(cgMonitor);
         assertNotNull(cga);

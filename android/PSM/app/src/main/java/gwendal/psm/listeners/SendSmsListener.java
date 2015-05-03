@@ -42,7 +42,7 @@ public class SendSmsListener implements View.OnClickListener {
         SmsManager manager = SmsManager.getDefault();
         PendingIntent sentPI = null;//PendingIntent.getBroadcast(v.getContext(), 0, new Intent("SMS_SENT"), 0);
         PendingIntent deliveredPI = null;//PendingIntent.getBroadcast(v.getContext(), 0, new Intent("SMS_DELIVERED"), 0);
-        for(Contact c : this.group) {
+        for(Contact c : this.group.getList()) {
             if(!c.getNumber().equals("")) {
                 manager.sendTextMessage(c.getNumber(), null, this.smsText.getText().toString(), sentPI, deliveredPI);
             }

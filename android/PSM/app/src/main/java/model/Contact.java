@@ -1,12 +1,13 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Observable;
 
 /**
  * Created by gwendal on 01/03/15.
  * Contact.
  */
-public class Contact implements Serializable {
+public class Contact extends Observable implements Serializable, ModelItem {
 
     /**
      * Name.

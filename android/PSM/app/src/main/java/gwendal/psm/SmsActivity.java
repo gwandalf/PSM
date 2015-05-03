@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import gwendal.psm.listeners.SendSmsListener;
 import model.ContactGroup;
+import model.GroupList;
 
 
 public class SmsActivity extends Activity {
@@ -19,12 +20,13 @@ public class SmsActivity extends Activity {
     /**
      * Group or recipients.
      */
-    public static ContactGroup group;
+    public ContactGroup group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms);
+        this.group = GroupList.INSTANCE.getActive();
         Button sendButton = (Button) findViewById(R.id.send_button);
         EditText smsText = (EditText) findViewById(R.id.sms_text);
         SendSmsListener sendSmsListener = new SendSmsListener(group, smsText);
@@ -52,16 +54,5 @@ public class SmsActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Launches the SmsActivity on the specified ContactGroup.
-     * @param ctx Launcher Context.
-     * @param group ContactGroup of recipients.
-     */
-    public static void launchOnContactGroup(Context ctx, ContactGroup group) {
-        SmsActivity.group = group;
-        Intent intent = new Intent(ctx, SmsActivity.class);
-        ctx.startActivity(intent);
     }
 }

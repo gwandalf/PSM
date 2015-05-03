@@ -63,26 +63,4 @@ public class ContactsActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /**
-     * Launches the native Contacts Activity.
-     * @param launcher Launcher.
-     */
-    public static void launch(Activity launcher) {
-        Intent pickContactIntent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
-        launcher.startActivityForResult(pickContactIntent, 1);
-    }
-
-    /**
-     * Launches this activity if testFlag is set to true, launches the native Contacts Activity otherwise.
-     * @param launcher Launcher.
-     * @param testFlag if testFlag is set to true, launches the native Contacts Activity otherwise.
-     */
-    public static void launch(Activity launcher, boolean testFlag) {
-        if(testFlag) {
-            Intent pickContactIntent = new Intent(launcher, ContactsActivity.class);
-            launcher.startActivityForResult(pickContactIntent, 1);
-        } else
-            launch(launcher);
-    }
 }

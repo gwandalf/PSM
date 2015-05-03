@@ -2,54 +2,26 @@ package gwendal.psm;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
-import gwendal.psm.controllers.ContactGroupControllerList;
-import gwendal.psm.controllers.ContactGroupFactory;
-import gwendal.psm.controllers.GroupButtonList;
+import gwendal.psm.controllers.GroupViewList;
 import gwendal.psm.listeners.CreateGroupListener;
-import gwendal.psm.controllers.ContactGroupController;
-import gwendal.psm.listeners.OpenGroupListener;
-import model.ContactGroup;
 import model.GroupList;
-
-import static gwendal.psm.ContactGroupActivity.CONTACT_GROUP;
 
 
 public class MainActivity extends Activity {
-
-    /**
-     * ContactGroupController set.
-     */
-    public ContactGroupControllerList contactGroupCtrlList;
-
-    /**
-     * ContactGroupFactory.
-     */
-    public static ContactGroupFactory factory;
-
-    /**
-     * Layout.
-     */
-    private LinearLayout layout;
 
     public Button addGroup;
 
@@ -57,25 +29,24 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        GroupList.INSTANCE.addObserver(GroupButtonList.INSTANCE);
-        this.layout = (LinearLayout) findViewById(R.id.group_list);
+        LinearLayout layout = (LinearLayout) findViewById(R.id.group_list);
+        GroupViewList.INSTANCE.parentContext = this;
+        GroupViewList.INSTANCE.parentLayout = layout;
         List<String> fileList = Arrays.asList(fileList());
-        if(fileList.contains(ContactGroupFactory.FILE_NAME)) {
+        if(fileList.contains(GroupList.FILE_NAME)) {
             Log.d("FACTORY", "file is present");
             try {
-                factory = ContactGroupFactory.loadInstance(this);
                 Log.d("FACTORY", "loadInstance");
-                this.contactGroupCtrlList = factory.load(this);
+                FileInputStream fis = openFileInput(GroupList.FILE_NAME);
+                GroupList.INSTANCE.load(fis);
             }catch(Exception e){
                 DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
             }
         } else {
             Log.d("FACTORY", "file is absent");
-            factory = new ContactGroupFactory();
-            this.contactGroupCtrlList = new ContactGroupControllerList();
         }
         addGroup = (Button) findViewById(R.id.add_group);
-        CreateGroupListener command = new CreateGroupListener(this);
+        CreateGroupListener command = new CreateGroupListener();
         addGroup.setOnClickListener(command);
     }
 
@@ -102,38 +73,14 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode >= 0 && resultCode == RESULT_OK && data != null && data.getExtras() != null) {
-            Bundle extras = data.getExtras();
-            ContactGroup group = (ContactGroup)extras.get(CONTACT_GROUP);
-            try {
-                factory.save(group, this);
-                Toast.makeText(this, "Le groupe a été sauvegardé.", Toast.LENGTH_SHORT).show();
-                ContactGroupController ctrl = this.contactGroupCtrlList.get(requestCode);
-                ctrl.setModel(group);
-            } catch (IOException e) {
-                Toast.makeText(this, "Le groupe n'a pas été sauvegardé correctement.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    @Override
     protected void onDestroy() {
         try {
-            factory.saveInstance(this);
+            FileOutputStream fos = openFileOutput(GroupList.FILE_NAME, Context.MODE_PRIVATE);
+            GroupList.INSTANCE.save(fos);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Problème de sauvegarde", Toast.LENGTH_SHORT).show();
         }
         super.onDestroy();
-    }
-
-    /**
-     * Gets the current layout.
-     * @return LinearLayout.
-     */
-    public LinearLayout getLayout() {
-        return layout;
     }
 }

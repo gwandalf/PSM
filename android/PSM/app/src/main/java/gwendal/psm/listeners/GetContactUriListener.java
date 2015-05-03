@@ -9,6 +9,7 @@ import gwendal.psm.ContactsActivity;
 
 /**
  * Created by gwendal on 25/03/15.
+ * Gets a contact URI.
  */
 public class GetContactUriListener implements View.OnClickListener {
 

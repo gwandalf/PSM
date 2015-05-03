@@ -1,6 +1,7 @@
 package model;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -21,6 +22,11 @@ public final class GroupList extends ObservableList<ContactGroup> implements Ser
      * Only Instance of this class.
      */
     public static final GroupList INSTANCE = new GroupList();
+
+    /**
+     * Save file name.
+     */
+    public static final String FILE_NAME = "Save.ser";
 
     /**
      * Active Group.
@@ -54,6 +60,7 @@ public final class GroupList extends ObservableList<ContactGroup> implements Ser
         GroupList groupList = (GroupList) objectInputStream.readObject();
         for(ContactGroup group : groupList.list) {
             add(group);
+            Log.d("FACTORY", "group added");
         }
         objectInputStream.close();
         saveFile.close();

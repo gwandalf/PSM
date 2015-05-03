@@ -69,4 +69,12 @@ public class ObservableList<T> extends Observable {
     public T getRemovedItem() {
         return this.removedItem;
     }
+
+    /**
+     * Gets the List.
+     * @return The list.
+     */
+    public ArrayList<T> getList() {
+        return this.list;
+    }
 }

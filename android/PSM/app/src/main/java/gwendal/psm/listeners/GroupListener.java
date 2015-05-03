@@ -2,21 +2,22 @@ package gwendal.psm.listeners;
 
 import android.view.View;
 
-import gwendal.psm.ContactGroupActivity;
+import model.ContactGroup;
 
 /**
  * Created by gwendal on 16/03/15.
+ * Listener using a ContactGroup.
  */
 public abstract class GroupListener implements View.OnClickListener {
 
     /**
-     * ContactGroupActivity.
+     * ContactGroup.
      */
-    protected ContactGroupActivity cga;
+    protected ContactGroup group;
 
     /**
      * Constructor.
-     * @param cga ContactGroupActivity.
+     * @param group ContactGroup.
      */
-    public GroupListener(ContactGroupActivity cga) { this.cga = cga; }
+    public GroupListener(ContactGroup group) { this.group = group; }
 }
