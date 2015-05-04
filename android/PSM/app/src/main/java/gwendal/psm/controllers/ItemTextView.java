@@ -9,7 +9,10 @@ import java.util.Observable;
 import java.util.Observer;
 
 import gwendal.psm.R;
+import gwendal.psm.listeners.DestroyItemListener;
+import gwendal.psm.views.ItemView;
 import model.ModelItem;
+import model.ObservableList;
 
 /**
  * Created by gwendal on 02/05/15.
@@ -18,14 +21,9 @@ import model.ModelItem;
 public class ItemTextView implements Observer {
 
     /**
-     * Text view.
+     * Item view.
      */
-    public TextView textView;
-
-    /**
-     * Parameters.
-     */
-    public LinearLayout.LayoutParams params;
+    public ItemView view;
 
     /**
      * Observed model item.
@@ -38,19 +36,17 @@ public class ItemTextView implements Observer {
      * @param observed Observed Model Item.
      */
     public ItemTextView(Context parentContext, ModelItem observed) {
+        this.view = new ItemView(parentContext);
+        this.view.textView.setText(observed.getName());
         this.observed = observed;
         this.observed.addObserver(this);
-        this.textView = new TextView(parentContext, null, R.attr.style);
-        this.params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        this.params.setMargins(16, 16, 16, 16);
-        this.textView.setText(observed.getName());
     }
 
     @Override
     public void update(Observable observable, Object data) {
         String arg = (String)data;
         if("name".equals(arg)) {
-            this.textView.setText(this.observed.getName());
+            this.view.textView.setText(this.observed.getName());
         }
     }
 }

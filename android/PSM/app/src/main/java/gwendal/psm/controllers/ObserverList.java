@@ -1,12 +1,14 @@
 package gwendal.psm.controllers;
 
 import android.content.Context;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import gwendal.psm.listeners.DestroyItemListener;
 import model.Contact;
 import model.ContactGroup;
 import model.ModelItem;
@@ -58,7 +60,8 @@ public class ObserverList<T extends ModelItem> implements Observer {
                 viewItem = new ItemTextView(this.parentContext, item);
                 this.modelViewMap.put(item, viewItem);
             }
-            this.parentLayout.addView(viewItem.textView, viewItem.params);
+            this.parentLayout.addView(viewItem.view.textView, viewItem.view.getParams());
+            setListeners(viewItem);
         }
     }
 
@@ -80,7 +83,7 @@ public class ObserverList<T extends ModelItem> implements Observer {
         T modelItem = this.observed.getAddedItem();
         ItemTextView viewItem = new ItemTextView(this.parentContext, modelItem);
         this.modelViewMap.put(modelItem, viewItem);
-        this.parentLayout.addView(viewItem.textView, viewItem.params);
+        this.parentLayout.addView(viewItem.view.textView, viewItem.view.getParams());
     }
 
     /**
@@ -90,7 +93,16 @@ public class ObserverList<T extends ModelItem> implements Observer {
     protected void handleRemove() {
         T modelItem = this.observed.getRemovedItem();
         ItemTextView viewItem = this.modelViewMap.get(modelItem);
-        this.parentLayout.removeView(viewItem.textView);
+        this.parentLayout.removeView(viewItem.view.textView);
         this.modelViewMap.remove(modelItem);
+    }
+
+    /**
+     * Sets the listeners to the specified view Item.
+     * @param viewItem View Item.
+     */
+    protected void setListeners(ItemTextView viewItem) {
+        DestroyItemListener listener = new DestroyItemListener(viewItem.observed, this.observed);
+        viewItem.view.destroy.setOnClickListener(listener);
     }
 }

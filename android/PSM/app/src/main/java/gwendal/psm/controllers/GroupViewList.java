@@ -57,9 +57,6 @@ public final class GroupViewList extends ObserverList<ContactGroup> {
         ContactGroup modelItem = this.observed.getAddedItem();
         ContactViewList contactViewList = new ContactViewList(modelItem);
         this.contactViews.put(modelItem, contactViewList);
-        OpenGroupListener openGroup = new OpenGroupListener(modelItem);
-        ItemTextView viewItem = this.modelViewMap.get(modelItem);
-        viewItem.textView.setOnClickListener(openGroup);
     }
 
     @Override
@@ -67,5 +64,12 @@ public final class GroupViewList extends ObserverList<ContactGroup> {
         super.handleRemove();
         ContactGroup modelItem = this.observed.getRemovedItem();
         this.contactViews.remove(modelItem);
+    }
+
+    @Override
+    protected void setListeners(ItemTextView viewItem) {
+        super.setListeners(viewItem);
+        OpenGroupListener openGroup = new OpenGroupListener((ContactGroup)viewItem.observed);
+        viewItem.view.textView.setOnClickListener(openGroup);
     }
 }
