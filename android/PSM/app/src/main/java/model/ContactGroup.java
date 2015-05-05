@@ -32,7 +32,7 @@ public class ContactGroup extends ObservableList<Contact> implements ModelItem {
      * Opens this group.
      */
     public void open() {
-        GroupList.INSTANCE.setActive(this);
+        ApplicationManager.SELECTED_GROUP = this;
     }
 
     /**

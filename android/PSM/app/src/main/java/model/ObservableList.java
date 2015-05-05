@@ -30,7 +30,7 @@ public class ObservableList<T extends ModelItem> extends Observable implements S
     /**
      * Map of correspondence between the elements and their observers.
      */
-    public HashMap<T, Observer> modelViewMap;
+    public transient HashMap<T, Observer> modelViewMap;
 
     /**
      * Constructor.

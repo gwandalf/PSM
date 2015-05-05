@@ -3,6 +3,7 @@ package gwendal.psm.listeners;
 import android.util.Log;
 import android.view.View;
 
+import model.ApplicationManager;
 import model.ContactGroup;
 import model.GroupList;
 
@@ -15,7 +16,7 @@ public class CreateGroupListener implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         ContactGroup group = new ContactGroup();
-        GroupList.INSTANCE.add(group);
+        ApplicationManager.GROUP_LIST.add(group);
         group.open();
     }
 }

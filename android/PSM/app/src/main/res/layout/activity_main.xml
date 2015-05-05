@@ -22,13 +22,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <gwendal.psm.views.GroupListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/group_list"
             android:orientation="vertical">
 
-        </LinearLayout>
+        </gwendal.psm.views.GroupListView>
 
     </ScrollView>
 

@@ -8,12 +8,16 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import gwendal.psm.R;
+import model.ModelItem;
 
 /**
  * Created by gwendal on 04/05/15.
  */
-public class ItemView extends LinearLayout {
+public class ItemView extends LinearLayout implements Observer {
 
     /**
      * Text view.
@@ -67,6 +71,15 @@ public class ItemView extends LinearLayout {
         LayoutParams myParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(this.textView, myParams);
         addView(this.destroy, myParams);
+    }
+
+    @Override
+    public void update(Observable observable, Object data) {
+        String arg = (String)data;
+        ModelItem model = (ModelItem)observable;
+        if("name".equals(arg)) {
+            this.textView.setText(model.getName());
+        }
     }
 
     /**

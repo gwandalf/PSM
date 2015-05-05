@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import gwendal.psm.listeners.SendSmsListener;
+import model.ApplicationManager;
 import model.ContactGroup;
 import model.GroupList;
 
@@ -26,7 +27,7 @@ public class SmsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms);
-        this.group = GroupList.INSTANCE.getActive();
+        this.group = ApplicationManager.SELECTED_GROUP;
         Button sendButton = (Button) findViewById(R.id.send_button);
         EditText smsText = (EditText) findViewById(R.id.sms_text);
         SendSmsListener sendSmsListener = new SendSmsListener(group, smsText);

@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import gwendal.psm.controllers.ItemTextView;
 import gwendal.psm.listeners.DestroyItemListener;
 import model.Contact;
 import model.ContactGroup;

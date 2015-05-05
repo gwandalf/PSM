@@ -12,12 +12,13 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import gwendal.psm.controllers.ContactFactory;
-import gwendal.psm.controllers.ContactViewList;
-import gwendal.psm.controllers.GroupViewList;
 import gwendal.psm.listeners.AddContactListener;
 import gwendal.psm.listeners.ExitContactGroupListener;
 import gwendal.psm.listeners.WriteSmsListener;
+import gwendal.psm.views.ContactListView;
+import model.ApplicationManager;
 import model.Contact;
+import model.ContactGroup;
 
 
 public class ContactGroupActivity extends Activity {
@@ -38,11 +39,6 @@ public class ContactGroupActivity extends Activity {
     private Button okButton;
 
     /**
-     * Contact View List.
-     */
-    private ContactViewList contactViewList;
-
-    /**
      * Contact factory.
      */
     private ContactFactory contactFactory;
@@ -50,28 +46,31 @@ public class ContactGroupActivity extends Activity {
     /**
      * Layout containing the Contact list.
      */
-    private LinearLayout layout;
+    private ContactListView layout;
+
+    /**
+     * ContactGroup.
+     */
+    private ContactGroup group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_group);
-        this.contactViewList = GroupViewList.INSTANCE.active;
-        this.layout = (LinearLayout) findViewById(R.id.contact_list);
-        this.contactViewList.parentContext = this;
-        this.contactViewList.parentLayout = layout;
-        this.contactViewList.forceUpdate();
+        this.layout = (ContactListView) findViewById(R.id.contact_list);
+        this.group = ApplicationManager.SELECTED_GROUP;
+        this.layout.setSource(this.group);
         this.contactFactory = new ContactFactory(this);
         this.addContact = (Button) findViewById(R.id.add_contact);
         AddContactListener addContactListener = new AddContactListener(this, false);
         addContact.setOnClickListener(addContactListener);
         this.okButton = (Button) findViewById(R.id.register_group);
         this.groupName = (EditText) findViewById(R.id.group_name);
-        this.groupName.setText(this.contactViewList.getContactGroup().getName());
+        this.groupName.setText(group.getName());
         ExitContactGroupListener ok = new ExitContactGroupListener(this);
         okButton.setOnClickListener(ok);
         Button writeButton = (Button) findViewById(R.id.write_sms);
-        WriteSmsListener writeSmsListener = new WriteSmsListener(this.contactViewList.getContactGroup());
+        WriteSmsListener writeSmsListener = new WriteSmsListener(group);
         writeButton.setOnClickListener(writeSmsListener);
     }
 
@@ -110,7 +109,7 @@ public class ContactGroupActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK) {
             Contact contact = this.contactFactory.makeContact(data);
-            this.contactViewList.getContactGroup().add(contact);
+            this.group.add(contact);
         }
         else
             DialogFactory.showErrorDialog("Le contact n'a pas pu être ajouté.", this);
@@ -118,7 +117,7 @@ public class ContactGroupActivity extends Activity {
 
     @Override
     public void finish() {
-        this.contactViewList.getContactGroup().setName(this.groupName.getText().toString());
+        this.group.setName(this.groupName.getText().toString());
         for(int i = 0 ; i < this.layout.getChildCount() ; i++) {
             this.layout.removeView(this.layout.getChildAt(i));
         }

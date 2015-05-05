@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.FileInputStream;
@@ -16,10 +15,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import gwendal.psm.controllers.GroupViewList;
 import gwendal.psm.listeners.CreateGroupListener;
+import gwendal.psm.views.GroupListView;
+import model.ApplicationManager;
 import model.GroupList;
-import model.GroupListStub;
 
 
 public class MainActivity extends Activity {
@@ -41,21 +40,17 @@ public class MainActivity extends Activity {
             try {
                 Log.d("FACTORY", "loadInstance");
                 FileInputStream fis = openFileInput(FILE_NAME);
-                GroupList.INSTANCE = GroupListStub.load(fis);
+                ApplicationManager.GROUP_LIST = GroupList.load(fis);
             }catch(Exception e){
                 DialogFactory.showErrorDialog("La liste des groupes ne peut pas être chargée.", this);
-                GroupList.INSTANCE = new GroupListStub();
+                ApplicationManager.GROUP_LIST = new GroupList();
             }
         } else {
             Log.d("FACTORY", "file is absent");
-            GroupList.INSTANCE = new GroupListStub();
+            ApplicationManager.GROUP_LIST = new GroupList();
         }
-        LinearLayout layout = (LinearLayout) findViewById(R.id.group_list);
-        GroupViewList.INSTANCE.observed = GroupList.INSTANCE;
-        GroupViewList.INSTANCE.observed.addObserver(GroupViewList.INSTANCE);
-        GroupViewList.INSTANCE.parentContext = this;
-        GroupViewList.INSTANCE.parentLayout = layout;
-        GroupViewList.INSTANCE.forceUpdate();
+        GroupListView layout = (GroupListView) findViewById(R.id.group_list);
+        layout.setSource(ApplicationManager.GROUP_LIST);
         addGroup = (Button) findViewById(R.id.add_group);
         CreateGroupListener command = new CreateGroupListener();
         addGroup.setOnClickListener(command);
@@ -87,7 +82,7 @@ public class MainActivity extends Activity {
     protected void onDestroy() {
         try {
             FileOutputStream fos = openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
-            GroupList.INSTANCE.save(fos);
+            ApplicationManager.GROUP_LIST.save(fos);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(this, "Problème de sauvegarde", Toast.LENGTH_SHORT).show();
