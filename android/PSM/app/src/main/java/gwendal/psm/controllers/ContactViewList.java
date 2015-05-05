@@ -1,7 +1,6 @@
 package gwendal.psm.controllers;
 
-import java.util.Observable;
-
+import gwendal.psm.views.ObserverList;
 import model.Contact;
 import model.ContactGroup;
 

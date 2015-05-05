@@ -2,13 +2,15 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Created by gwendal on 02/05/15.
  * Observable list.
  */
-public class ObservableList<T extends Serializable> extends Observable implements Serializable {
+public class ObservableList<T extends ModelItem> extends Observable implements Serializable {
 
     /**
      * Item list.
@@ -26,11 +28,17 @@ public class ObservableList<T extends Serializable> extends Observable implement
     private T removedItem;
 
     /**
+     * Map of correspondence between the elements and their observers.
+     */
+    public HashMap<T, Observer> modelViewMap;
+
+    /**
      * Constructor.
      */
     public ObservableList() {
         super();
         this.list = new ArrayList<T>();
+        this.modelViewMap = new HashMap<T, Observer>();
     }
 
     /**
@@ -39,8 +47,8 @@ public class ObservableList<T extends Serializable> extends Observable implement
      */
     public void add(T item) {
         this.list.add(item);
-        setChanged();
         this.addedItem = item;
+        setChanged();
         notifyObservers("add");
     }
 

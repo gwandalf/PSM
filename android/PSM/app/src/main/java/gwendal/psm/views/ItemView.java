@@ -26,11 +26,6 @@ public class ItemView extends LinearLayout {
     public ImageButton destroy;
 
     /**
-     * Advised parent layout params.
-     */
-    private LayoutParams params;
-
-    /**
      * Constructor.
      * @param context Context.
      */
@@ -69,7 +64,6 @@ public class ItemView extends LinearLayout {
         this.textView = new TextView(context, null, R.attr.style);
         this.destroy = new ImageButton(context);
         this.destroy.setImageResource(R.drawable.cross24);
-        setParams();
         LayoutParams myParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(this.textView, myParams);
         addView(this.destroy, myParams);
@@ -78,16 +72,16 @@ public class ItemView extends LinearLayout {
     /**
      * Gets the advised parent layout params.
      * @return The advised parent layout params.
-     */
+     *
     public LayoutParams getParams() {
         return this.params;
-    }
+    }*/
 
     /**
      * Sets the advised parent layout params.
-     */
+     *
     private void setParams() {
         this.params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         this.params.setMargins(16, 16, 16, 16);
-    }
+    }*/
 }

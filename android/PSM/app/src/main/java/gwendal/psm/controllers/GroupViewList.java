@@ -7,6 +7,7 @@ import java.util.Observable;
 
 import gwendal.psm.ContactGroupActivity;
 import gwendal.psm.listeners.OpenGroupListener;
+import gwendal.psm.views.ObserverList;
 import model.ContactGroup;
 import model.GroupList;
 
