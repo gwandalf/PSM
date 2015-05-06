@@ -1,5 +1,6 @@
 package gwendal.psm.listeners;
 
+import android.util.Log;
 import android.view.View;
 
 import model.ModelItem;
@@ -29,6 +30,7 @@ public class DestroyItemListener implements View.OnClickListener {
     public DestroyItemListener(ModelItem item, ObservableList itemContainer) {
         this.item = item;
         this.itemContainer = itemContainer;
+        Log.d("SOURCE", "Listener, this.itemContainer == null is " + (this.itemContainer == null));
     }
 
     @Override

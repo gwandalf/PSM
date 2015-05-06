@@ -44,7 +44,7 @@ public class SendSmsIntegrationTest extends ActivityInstrumentationTestCase2<Mai
         LinearLayout groupList = (LinearLayout) main.findViewById(R.id.group_list);
         View myGroup = getMyGroup(groupList);
         if(myGroup == null)
-            AddContactIntegrationTest.addMyGroup(this, main);
+            Utils.addMyGroup(this, main);
         myGroup = getMyGroup(groupList);
         Utils.performClick(main, myGroup);
         Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(ContactGroupActivity.class.getName(), null, false);

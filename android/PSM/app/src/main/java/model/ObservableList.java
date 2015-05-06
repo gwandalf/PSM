@@ -28,17 +28,11 @@ public class ObservableList<T extends ModelItem> extends Observable implements S
     private T removedItem;
 
     /**
-     * Map of correspondence between the elements and their observers.
-     */
-    public transient HashMap<T, Observer> modelViewMap;
-
-    /**
      * Constructor.
      */
     public ObservableList() {
         super();
         this.list = new ArrayList<T>();
-        this.modelViewMap = new HashMap<T, Observer>();
     }
 
     /**

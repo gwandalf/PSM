@@ -30,6 +30,11 @@ public class MainActivity extends Activity {
 
     public Button addGroup;
 
+    /**
+     * Layout containing the groups.
+     */
+    public GroupListView groupListView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +54,8 @@ public class MainActivity extends Activity {
             Log.d("FACTORY", "file is absent");
             ApplicationManager.GROUP_LIST = new GroupList();
         }
-        GroupListView layout = (GroupListView) findViewById(R.id.group_list);
-        layout.setSource(ApplicationManager.GROUP_LIST);
+        this.groupListView = (GroupListView) findViewById(R.id.group_list);
+        this.groupListView.setSource(ApplicationManager.GROUP_LIST);
         addGroup = (Button) findViewById(R.id.add_group);
         CreateGroupListener command = new CreateGroupListener();
         addGroup.setOnClickListener(command);

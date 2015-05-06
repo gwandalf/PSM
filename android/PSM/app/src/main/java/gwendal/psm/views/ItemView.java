@@ -1,6 +1,7 @@
 package gwendal.psm.views;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import android.widget.TextView;
 import java.util.Observable;
 import java.util.Observer;
 
+import gwendal.psm.ContactGroupActivity;
 import gwendal.psm.R;
+import model.ApplicationManager;
+import model.ContactGroup;
 import model.ModelItem;
 
 /**
@@ -65,12 +69,13 @@ public class ItemView extends LinearLayout implements Observer {
      * @param context Context.
      */
     private void init(Context context) {
+        LayoutParams textViewParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 3);
         this.textView = new TextView(context, null, R.attr.style);
         this.destroy = new ImageButton(context);
         this.destroy.setImageResource(R.drawable.cross24);
-        LayoutParams myParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(this.textView, myParams);
-        addView(this.destroy, myParams);
+        LayoutParams destroyParams = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        addView(this.textView, textViewParams);
+        addView(this.destroy, destroyParams);
     }
 
     @Override
@@ -79,6 +84,9 @@ public class ItemView extends LinearLayout implements Observer {
         ModelItem model = (ModelItem)observable;
         if("name".equals(arg)) {
             this.textView.setText(model.getName());
+        } else if("open".equals(arg)) {
+            Intent intent = new Intent(getContext(), ContactGroupActivity.class);
+            getContext().startActivity(intent);
         }
     }
 
@@ -87,7 +95,7 @@ public class ItemView extends LinearLayout implements Observer {
      * @return The advised parent layout params.
      *
     public LayoutParams getParams() {
-        return this.params;
+        //return this.params;
     }*/
 
     /**

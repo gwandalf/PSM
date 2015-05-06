@@ -28,6 +28,24 @@
             android:id="@+id/group_list"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!--TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gwendal"
+                    android:layout_weight="2"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Le Moulec"-->
+
+            </LinearLayout>
+
         </gwendal.psm.views.GroupListView>
 
     </ScrollView>

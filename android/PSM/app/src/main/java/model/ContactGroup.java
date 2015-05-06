@@ -33,6 +33,8 @@ public class ContactGroup extends ObservableList<Contact> implements ModelItem {
      */
     public void open() {
         ApplicationManager.SELECTED_GROUP = this;
+        setChanged();
+        notifyObservers("open");
     }
 
     /**

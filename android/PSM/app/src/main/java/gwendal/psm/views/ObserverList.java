@@ -2,6 +2,8 @@ package gwendal.psm.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
@@ -22,9 +24,19 @@ import model.ObservableList;
 public abstract class ObserverList extends LinearLayout implements Observer {
 
     /**
+     * Params.
+     */
+    public static final LayoutParams PARAMS = initParams();
+
+    /**
      * Source list.
      */
     protected ObservableList source;
+
+    /**
+     * Map of correspondence between the elements and their observers.
+     */
+    public HashMap<ModelItem, ItemView> modelViewMap;
 
     /**
      * Constructor.
@@ -32,6 +44,7 @@ public abstract class ObserverList extends LinearLayout implements Observer {
      */
     public ObserverList(Context context) {
         super(context);
+        this.modelViewMap = new HashMap<ModelItem, ItemView>();
     }
 
     /**
@@ -41,6 +54,7 @@ public abstract class ObserverList extends LinearLayout implements Observer {
      */
     public ObserverList(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.modelViewMap = new HashMap<ModelItem, ItemView>();
     }
 
     /**
@@ -51,6 +65,17 @@ public abstract class ObserverList extends LinearLayout implements Observer {
      */
     public ObserverList(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.modelViewMap = new HashMap<ModelItem, ItemView>();
+    }
+
+    /**
+     * Initializes the params.
+     * @return The params.
+     */
+    private static LayoutParams initParams() {
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(16, 16, 16, 16);
+        return params;
     }
 
     /**
@@ -75,21 +100,23 @@ public abstract class ObserverList extends LinearLayout implements Observer {
     public void setSource(ObservableList source) {
         if(source == null) {
             removeAllViews();
+            this.source = null;
         } else if(source != this.source) {
+            this.source = source;
             source.addObserver(this);
             for(Object o : source.getList()) {
                 ModelItem item = (ModelItem)o;
                 ItemView component;
-                if(this.source.modelViewMap.containsKey(item)) {
-                    component = (ItemView)this.source.modelViewMap.get(item);
+                if(this.modelViewMap.containsKey(item)) {
+                    component = (ItemView)this.modelViewMap.get(item);
                 } else {
                     component = makeItemView(item);
-                    this.source.modelViewMap.put(item, component);
+                    this.modelViewMap.put(item, component);
                 }
-                addView(component);
+                addView(component, PARAMS);
             }
         }
-        this.source = source;
+        Log.d("SOURCE", "this.source == null is " + (this.source == null));
     }
 
     @Override
@@ -109,7 +136,8 @@ public abstract class ObserverList extends LinearLayout implements Observer {
     protected void handleAdd() {
         ModelItem item = this.source.getAddedItem();
         ItemView view = makeItemView(item);
-        this.source.modelViewMap.put(item, view);
+        addView(view, PARAMS);
+        this.modelViewMap.put(item, view);
     }
 
     /**
@@ -118,8 +146,8 @@ public abstract class ObserverList extends LinearLayout implements Observer {
      */
     protected void handleRemove() {
         ModelItem item = this.source.getRemovedItem();
-        ItemView view = (ItemView)this.source.modelViewMap.get(item);
+        ItemView view = (ItemView)this.modelViewMap.get(item);
         removeView(view);
-        this.source.modelViewMap.remove(item);
+        this.modelViewMap.remove(item);
     }
 }
